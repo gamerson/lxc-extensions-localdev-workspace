@@ -7,7 +7,6 @@
 #@ end
 
 #@ files = data.list()
-#@ if data.values.initMetadata:
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -22,4 +21,3 @@ metadata:
 data:
 #@ for/end jsonfile in [ f for f in files if f.endswith(".json") ]:
   _: #@ template.replace(parse(jsonfile))
-#@ end

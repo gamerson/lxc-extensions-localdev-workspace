@@ -2,7 +2,9 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: dxp-ingress-route
+  name: dxp
+  labels:
+    app: dxp
 spec:
   entryPoints:
     - websecure

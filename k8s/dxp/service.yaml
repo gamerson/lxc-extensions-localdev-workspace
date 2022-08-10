@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: dxp-service
+  name: dxp
   labels:
     app: dxp
 spec:

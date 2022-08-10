@@ -2,7 +2,9 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: #@ "{}-ingress-route".format(data.values.serviceId)
+  name: #@ data.values.serviceId
+  labels:
+    app: #@ data.values.serviceId
 spec:
   entryPoints:
     - websecure
