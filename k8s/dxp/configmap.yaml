@@ -1,7 +1,8 @@
+#@ load("@ytt:data", "data")
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: dxp.localdev.me-lxc-dxp-metadata
+  name: #@ "{}-lxc-dxp-metadata".format(data.values.virtualInstanceId)
   labels:
     extension.lxc.liferay.com/metadataType: "dxp"
 data:

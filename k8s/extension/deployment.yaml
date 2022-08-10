@@ -40,9 +40,9 @@ spec:
       volumes:
         - name: lxc-dxp-metadata
           configMap:
-            name: lxc-dxp-metadata
+            name: #@ "{}-lxc-dxp-metadata".format(data.values.virtualInstanceId)
         #@ if data.values.initMetadata:
         - name: lxc-ext-init-metadata
           configMap:
-            name: #@ "{}{}-lxc-init-metadata".format(data.values.serviceId, data.values.virtualInstanceId)
+            name: #@ "{}-{}-lxc-ext-init-metadata".format(data.values.serviceId, data.values.virtualInstanceId)
         #@ end

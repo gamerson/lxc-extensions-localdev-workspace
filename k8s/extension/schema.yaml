@@ -6,4 +6,4 @@ image: ""
 initMetadata: #@ False
 memory: "50Mi"
 serviceId: ""
-virtualInstanceId: localhost
+virtualInstanceId: liferay.com
