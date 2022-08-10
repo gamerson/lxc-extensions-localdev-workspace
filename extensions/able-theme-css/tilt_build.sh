@@ -6,6 +6,6 @@ set -e
 
 cd extensions/able-theme-css/dist
 
-unzip able-theme-css.zip
+unzip -o able-theme-css.zip
 
 docker build -t $EXPECTED_REF .

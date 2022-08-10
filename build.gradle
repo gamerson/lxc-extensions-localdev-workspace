@@ -1,15 +1,4 @@
-/*
-createDockerContainer {
-  exec {
-    commandLine "sh", "k8s/setenv.sh"
-  }
-
-  hostConfig.network = "k3d-lxc-localdev"
-
-	withEnvVar "KUBERNETES_CERTIFICATE", project.file("k8s/.certificate").text
-	withEnvVar "KUBERNETES_NAMESPACE", "default"
-	withEnvVar "KUBERNETES_SERVICE_HOST", "k3d-lxc-localdev-server-0"
-	withEnvVar "KUBERNETES_SERVICE_PORT", "6443"
-  withEnvVar "KUBERNETES_TOKEN", project.file("k8s/.token").text
+project.afterEvaluate {
+  def ignoredTask = tasks.findByPath(":extensions:able-theme-css:deploy")
+  buildDockerImage.dependsOn = buildDockerImage.dependsOn.findAll { !it.equals(ignoredTask) }
 }
-*/

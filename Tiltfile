@@ -1,7 +1,7 @@
 # DXP
 custom_build(
   'dxp', 
-  "./gradlew clean buildDockerImage -Pdocker.image.id=$EXPECTED_REF", 
+  "./gradlew :cleanDockerImage :buildDockerImage -Pdocker.image.id=$EXPECTED_REF", 
   deps=[
     'build.gradle',
     'configs/',
