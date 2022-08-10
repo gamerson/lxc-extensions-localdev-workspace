@@ -12,7 +12,7 @@ spec:
   - kind: Rule
     match: dxp.localdev.me
     services:
-    - name: dxp-service
+    - name: dxp
       port: 80
   tls:
     secretName: localdev-tls-secret

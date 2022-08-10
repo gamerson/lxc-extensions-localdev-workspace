@@ -12,7 +12,7 @@ spec:
       paths:
       - backend:
           service:
-            name: dxp-service
+            name: dxp
             port:
               number: 80
         path: /
