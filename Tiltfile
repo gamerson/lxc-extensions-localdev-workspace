@@ -20,14 +20,13 @@ k8s_yaml(
 )
 
 k8s_resource(
-  labels=['dxp'],
-  new_name='dxp-resources',
-  objects=['liferay.com-lxc-dxp-metadata:configmap']
-)
-
-k8s_resource(
    labels=['dxp'],
    port_forwards=['8000'], 
+   objects=[
+    'liferay.com-lxc-dxp-metadata:configmap',
+    'dxp:ingress',
+    'dxp:ingressroute'
+   ],
    workload='dxp'
 )
 
@@ -51,18 +50,12 @@ k8s_yaml(local("extensions/able-theme-css/tilt_yaml.sh"))
 k8s_resource(
    labels=['extensions'],
    resource_deps=['dxp'],
-   workload='able-theme-css'
-)
-
-k8s_resource(
-  labels=['extensions'],
-  new_name='able-theme-css-resources', 
-  objects=[
+   objects=[
     'able-theme-css-liferay.com-lxc-ext-provision-metadata:configmap',
-    'able-theme-css-ingress:ingress',
-    'able-theme-css-ingress-route:ingressroute'
+    'able-theme-css:ingress',
+    'able-theme-css:ingressroute'
   ],
-  resource_deps=['dxp']
+   workload='able-theme-css'
 )
 
 # couponpdf
@@ -83,18 +76,12 @@ k8s_resource(
    labels=['extensions'],
    port_forwards=['8001'],
    resource_deps=['dxp'],
-   workload='couponpdf'
-)
-
-k8s_resource(
-  labels=['extensions'],
-  new_name='couponpdf-resources', 
-  objects=[
+   objects=[
     'couponpdf-liferay.com-lxc-ext-provision-metadata:configmap', 
-    'couponpdf-ingress:ingress',
-    'couponpdf-ingress-route:ingressroute'
+    'couponpdf:ingress',
+    'couponpdf:ingressroute'
   ],
-  resource_deps=['dxp']
+   workload='couponpdf'
 )
 
 update_settings(max_parallel_updates=1)

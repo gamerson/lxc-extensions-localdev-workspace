@@ -4,6 +4,7 @@ kind: ConfigMap
 metadata:
   name: #@ "{}-lxc-dxp-metadata".format(data.values.virtualInstanceId)
   labels:
+    app: dxp
     extension.lxc.liferay.com/metadataType: "dxp"
 data:
   com.liferay.lxc.dxp.mainDomain: dxp.localdev.me
