@@ -1,9 +1,8 @@
 {
-  "com.liferay.oauth2.provider.configuration.OAuth2ProviderApplicationUserAgentConfiguration~couponpdf": {
+  "com.liferay.oauth2.provider.configuration.OAuth2ProviderApplicationHeadlessServerConfiguration~couponpdf": {
       ":configurator:policy": "force",
-      "description": "This a custom REST service DEMO",
+      "description": "Couponpdf headless server",
       "homePageURL": "https://$[conf:ext.lxc.liferay.com.mainDomain]",
-      "privacyPolicyURL": "https://$[conf:ext.lxc.liferay.com.mainDomain]",
       "scopes": ["Liferay.Headless.Admin.User.everything"]
   }
 }

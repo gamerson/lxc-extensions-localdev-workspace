@@ -1,6 +1,7 @@
 logging:
     level:
         com.liferay.couponpdf.service: DEBUG
+        org.springframework.cloud: DEBUG
         org.springframework.security: DEBUG
         org.springframework.web: DEBUG
 server:

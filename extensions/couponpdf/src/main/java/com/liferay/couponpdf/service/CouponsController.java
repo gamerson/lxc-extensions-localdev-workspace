@@ -36,9 +36,9 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 @RestController
 public class CouponsController {
 
-  @Qualifier("lcpDomain")
+  @Qualifier("mainDomain")
   @Resource
-  private String _lcpDomain;
+  private String _mainDomain;
 
   @Autowired private WebClient _webClient;
 
@@ -64,7 +64,7 @@ public class CouponsController {
     Coupons coupons =
         _webClient
             .get()
-            .uri("https://" + _lcpDomain + "/o/c/coupons/")
+            .uri("https://" + _mainDomain + "/o/c/coupons/")
             .retrieve()
             .bodyToMono(Coupons.class)
             .block();
@@ -110,7 +110,7 @@ public class CouponsController {
     Coupon coupon =
         _webClient
             .get()
-            .uri("https://" + _lcpDomain + "/o/c/coupons/" + id)
+            .uri("https://" + _mainDomain + "/o/c/coupons/" + id)
             .retrieve()
             .bodyToMono(Coupon.class)
             .block();
@@ -142,7 +142,7 @@ public class CouponsController {
   private Coupon _patchCoupon(Coupon coupon) {
     return _webClient
         .patch()
-        .uri("https://" + _lcpDomain + "/o/c/coupons/" + coupon.id)
+        .uri("https://" + _mainDomain + "/o/c/coupons/" + coupon.id)
         .contentType(MediaType.APPLICATION_JSON)
         .accept(MediaType.APPLICATION_JSON)
         .body(BodyInserters.fromValue(coupon))

@@ -1,0 +1,7 @@
+spring:
+  cloud:
+    kubernetes:
+      config:
+        sources:
+         - name: liferay.com-lxc-dxp-metadata
+         - name: couponpdf-liferay.com-lxc-ext-init-metadata

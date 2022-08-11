@@ -21,21 +21,15 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 public class OAuthClientConfiguration {
 
-  @Value("${LCP_PROJECT_ID}")
-  private String _lcpProjectId;
-
-  @Value("${LCP_SERVICE_DOMAIN}")
-  private String _lcpServiceDomain;
-
-  @Value("${WEBSERVER_SERVICE_HOST}")
-  private String _webserverServiceHost;
+  @Value("${com.liferay.lxc.dxp.mainDomain}")
+  private String _mainDomain;
 
   @Bean
   public ReactiveClientRegistrationRepository clientRegistrations(
-      @Value("${LIFERAY_OAUTH2_TOKEN_URI}") String tokenUri,
-      @Value("${LIFERAY_OAUTH2_HEADLESS_CLIENT_ID}") String clientId,
-      @Value("${LIFERAY_OAUTH2_HEADLESS_CLIENT_SECRET}") String clientSecret,
-      @Value("${LIFERAY_OAUTH2_HEADLESS_SCOPE}") String scope) {
+      @Value("${couponpdf.oauth2.token.uri}") String tokenUri,
+      @Value("${couponpdf.oauth2.headless.server.client.id}") String clientId,
+      @Value("${couponpdf.oauth2.headless.server.client.secret}") String clientSecret,
+      @Value("${couponpdf.oauth2.headless.server.scopes}") String scope) {
 
     ClientRegistration registration =
         ClientRegistration.withRegistrationId("dxp")
@@ -51,24 +45,8 @@ public class OAuthClientConfiguration {
   }
 
   @Bean
-  public String lcpDomain() {
-    String lcpDomain = null;
-
-    if ((_lcpServiceDomain != null)
-        && !_lcpServiceDomain.isEmpty()
-        && (_lcpProjectId != null)
-        && !_lcpProjectId.isEmpty()) {
-
-      lcpDomain = _lcpProjectId.concat(".").concat(_lcpServiceDomain);
-    }
-
-    if ((lcpDomain != null)
-        && (_webserverServiceHost != null)
-        && !_webserverServiceHost.isEmpty()) {
-      lcpDomain = "webserver-".concat(lcpDomain);
-    }
-
-    return lcpDomain;
+  public String mainDomain() {
+	  return _mainDomain;
   }
 
   @Bean
@@ -87,7 +65,7 @@ public class OAuthClientConfiguration {
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(Collections.singletonList("https://" + lcpDomain()));
+    configuration.setAllowedOrigins(Collections.singletonList("https://" + mainDomain()));
     configuration.setAllowedMethods(
         Arrays.asList("DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"));
     configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));

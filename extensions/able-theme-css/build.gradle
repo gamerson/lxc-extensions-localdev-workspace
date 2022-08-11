@@ -1,8 +1,1 @@
-buildClientExtension {
-	from('src/') {
-		include('**/*')
-		into('static/')
-	}
-}
-
 dockerDeploy.enabled = false
