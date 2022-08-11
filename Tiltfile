@@ -35,7 +35,7 @@ k8s_resource(
 # able-theme-css
 custom_build(
   'able-theme-css',
-  "extensions/able-theme-css/tilt_build.sh",
+  "extensions/able-theme-css/build.sh",
   deps=[
     'extensions/able-theme-css/build.gradle',
     'extensions/able-theme-css/client-extension.yaml',
@@ -45,7 +45,7 @@ custom_build(
   ignore=[]
 )
 
-k8s_yaml(local("extensions/able-theme-css/tilt_yaml.sh"))
+k8s_yaml(local("extensions/able-theme-css/yaml.sh"))
 
 k8s_resource(
    labels=['extensions'],
@@ -61,7 +61,7 @@ k8s_resource(
 # couponpdf
 custom_build(
   'couponpdf', 
-  "extensions/couponpdf/tilt_build.sh",
+  "extensions/couponpdf/build.sh",
   deps=[
     'extensions/couponpdf/configurator',
     'extensions/couponpdf/src',
@@ -70,7 +70,7 @@ custom_build(
   ignore=[]
 )
 
-k8s_yaml(local("extensions/couponpdf/tilt_yaml.sh"))
+k8s_yaml(local("extensions/couponpdf/yaml.sh"))
 
 k8s_resource(
    labels=['extensions'],
