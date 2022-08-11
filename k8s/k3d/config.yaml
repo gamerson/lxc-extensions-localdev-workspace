@@ -12,3 +12,8 @@ ports:
 options:
   k3d:
     wait: true
+subnet: "172.150.0.0/16"
+hostAliases:
+  - ip: 172.150.0.1
+    hostnames:
+      - dxp.localdev.me
