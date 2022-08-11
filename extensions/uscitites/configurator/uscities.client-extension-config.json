@@ -1,0 +1,8 @@
+{
+  "com.liferay.oauth2.provider.configuration.OAuth2ProviderApplicationUserAgentConfiguration~couponpdf": {
+      ":configurator:policy": "force",
+      "description": "US Cities User Agent Server",
+      "homePageURL": "https://$[conf:ext.lxc.liferay.com.mainDomain]",
+      "scopes": ["Liferay.Headless.Admin.User.everything"]
+  }
+}
