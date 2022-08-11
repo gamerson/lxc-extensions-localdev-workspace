@@ -84,4 +84,30 @@ k8s_resource(
    workload='couponpdf'
 )
 
+# uscities
+custom_build(
+  'uscities', 
+  "extensions/uscities/build.sh",
+  deps=[
+    'extensions/uscities/configurator',
+    'extensions/uscities/src',
+    'extensions/uscities/pom.xml'
+  ], 
+  ignore=[]
+)
+
+k8s_yaml(local("extensions/uscities/yaml.sh"))
+
+k8s_resource(
+   labels=['extensions'],
+   port_forwards=['8002'],
+   resource_deps=['dxp'],
+   objects=[
+    'uscities-liferay.com-lxc-ext-provision-metadata:configmap', 
+    'uscities:ingress',
+    'uscities:ingressroute'
+  ],
+   workload='uscities'
+)
+
 update_settings(max_parallel_updates=1)

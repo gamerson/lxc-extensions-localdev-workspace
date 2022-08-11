@@ -33,7 +33,7 @@ spec:
               path: /health
               port: 8080
               scheme: HTTP
-            initialDelaySeconds: 300
+            initialDelaySeconds: 240
             timeoutSeconds: 10
           livenessProbe:
             failureThreshold: 360

@@ -3,6 +3,6 @@
       ":configurator:policy": "force",
       "description": "Couponpdf headless server",
       "homePageURL": "https://$[conf:ext.lxc.liferay.com.mainDomain]",
-      "scopes": ["Liferay.Headless.Admin.User.everything"]
+      "scopes": ["C_Coupon.everything"]
   }
 }
