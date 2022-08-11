@@ -1,4 +1,5 @@
 project.afterEvaluate {
   def ignoredTask = tasks.findByPath(":extensions:able-theme-css:deploy")
   buildDockerImage.dependsOn = buildDockerImage.dependsOn.findAll { !it.equals(ignoredTask) }
+  buildDockerImage.pull = false
 }
