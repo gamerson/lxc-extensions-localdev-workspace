@@ -14,6 +14,7 @@
 **/tmp
 **/.web_bundle_build
 .DS_Store
+.cluster_config.yaml
 .gradle
 .idea
 /bundles

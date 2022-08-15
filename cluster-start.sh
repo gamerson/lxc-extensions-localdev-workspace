@@ -2,8 +2,12 @@
 
 set -e
 
+HOST_ALIASES="['dxp','able-theme-css','couponpdf','uscities']"
+
+ytt -f ./k8s/k3d --data-value-yaml "hostAliases=$HOST_ALIASES" > .cluster_config.yaml
+
 k3d cluster create \
-  --config ./k8s/k3d/config.yaml \
+  --config .cluster_config.yaml \
   --registry-create registry.localdev.me:5000 \
   --wait
 

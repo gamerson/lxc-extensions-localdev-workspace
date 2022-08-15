@@ -4,6 +4,10 @@ set -e
 
 cd extensions/couponpdf
 
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  export JAVA_HOME=$(/usr/libexec/java_home -v 11)
+fi
+
 mvn clean package
 
 cp ../../k8s/tls/ca.crt .

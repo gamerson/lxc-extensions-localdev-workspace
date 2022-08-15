@@ -1,3 +1,4 @@
+#@ load("@ytt:data", "data")
 apiVersion: k3d.io/v1alpha4
 kind: Simple
 metadata:
@@ -16,4 +17,5 @@ subnet: "172.150.0.0/16"
 hostAliases:
   - ip: 172.150.0.1
     hostnames:
-      - dxp.localdev.me
+    #@ for/end hostAlias in data.values.hostAliases:
+      - #@ "{}.localdev.me".format(hostAlias)
