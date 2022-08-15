@@ -3,4 +3,5 @@
 .project
 .settings/
 /ca.crt
+/coupon.pdf
 /target/
