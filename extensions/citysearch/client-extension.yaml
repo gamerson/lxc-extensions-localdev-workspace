@@ -1,0 +1,12 @@
+citysearch:
+  cssURLs:
+    - css/main.9877909d.css
+  friendlyURLMapping: citysearch
+  htmlElementName: citysearch
+  instanceable: false
+  name: City Search
+  portletCategoryName: category.remote-apps
+  type: customElement
+  urls:
+    - js/main.cb96e2fc.js
+  useESM: false
