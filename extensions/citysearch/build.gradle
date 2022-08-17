@@ -14,13 +14,11 @@ createClientExtensionConfig {
     def clientExtensionConfig = file("$buildDir/citysearch.client-extension-config.json")
     clientExtension.citysearch.cssURLs.each { url ->
       manifest.files.find { it.key == url }.each {
-        //def updatedUrl = it.value.replaceAll("^/static/", "")
         clientExtensionConfig.text = clientExtensionConfig.text.replaceAll(url, it.value)
       }
     }
     clientExtension.citysearch.urls.each { url ->
       manifest.files.find { it.key == url }.each {
-        //def updatedUrl = it.value.replaceAll("^/static/", "")
         clientExtensionConfig.text = clientExtensionConfig.text.replaceAll(url, it.value)
       }
     }
