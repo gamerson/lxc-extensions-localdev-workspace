@@ -1,8 +1,8 @@
 {
   "com.liferay.oauth2.provider.configuration.OAuth2ProviderApplicationUserAgentConfiguration~uscities": {
       ":configurator:policy": "force",
-      "description": "US Cities User Agent Server",
+      "description": "US Cities Resource Server",
       "homePageURL": "https://$[conf:ext.lxc.liferay.com.mainDomain]",
-      "scopes": ["Liferay.Headless.Admin.User.everything"]
+      "scopes": []
   }
 }

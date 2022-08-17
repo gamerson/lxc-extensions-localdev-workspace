@@ -23,7 +23,6 @@ k8s_resource(
    labels=['dxp'],
    port_forwards=['8000'], 
    objects=[
-    'liferay.com-lxc-dxp-metadata:configmap',
     'dxp:ingress',
     'dxp:ingressroute'
    ],
@@ -56,6 +55,34 @@ k8s_resource(
     'able-theme-css:ingressroute'
   ],
    workload='able-theme-css'
+)
+
+# citysearch
+custom_build(
+  'citysearch',
+  "extensions/citysearch/build.sh",
+  deps=[
+    'extensions/citysearch/build.gradle',
+    'extensions/citysearch/client-extension.yaml',
+    'extensions/citysearch/package.json',
+    'extensions/citysearch/src'
+  ],
+  ignore=[]
+)
+
+
+k8s_yaml(local("extensions/citysearch/yaml.sh"))
+read_file("extensions/citysearch/.citysearch.yaml")
+
+k8s_resource(
+   labels=['extensions'],
+   resource_deps=['dxp'],
+   objects=[
+    'citysearch-liferay.com-lxc-ext-provision-metadata:configmap',
+    'citysearch:ingress',
+    'citysearch:ingressroute'
+  ],
+   workload='citysearch'
 )
 
 # couponpdf

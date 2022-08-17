@@ -1,5 +1,35 @@
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath group: 'org.yaml', name: 'snakeyaml', version: '1.21'
+  }
+}
+
+createClientExtensionConfig {
+  doLast {
+    def clientExtension = new org.yaml.snakeyaml.Yaml().load(new FileInputStream(file("client-extension.yaml")))
+    def manifest = new groovy.json.JsonSlurper().parse(file("$buildDir/asset-manifest.json"))
+    def clientExtensionConfig = file("$buildDir/citysearch.client-extension-config.json")
+    clientExtension.citysearch.cssURLs.each { url ->
+      manifest.files.find { it.key == url }.each {
+        //def updatedUrl = it.value.replaceAll("^/static/", "")
+        clientExtensionConfig.text = clientExtensionConfig.text.replaceAll(url, it.value)
+      }
+    }
+    clientExtension.citysearch.urls.each { url ->
+      manifest.files.find { it.key == url }.each {
+        //def updatedUrl = it.value.replaceAll("^/static/", "")
+        clientExtensionConfig.text = clientExtensionConfig.text.replaceAll(url, it.value)
+      }
+    }
+  }
+}
+
 buildClientExtension {
 	from('build/') {
 		include('static/**/*')
+    into('static')
 	}
 }

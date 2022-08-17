@@ -28,7 +28,7 @@ class WebComponent extends HTMLElement {
 	constructor() {
 		super();
 
-		this.webClient = WebClient.FromUserAgentApplication('customrestservice');
+		this.webClient = WebClient.FromUserAgentApplication('uscities');
 	}
 
 	connectedCallback() {
@@ -52,7 +52,7 @@ class WebComponent extends HTMLElement {
 	}
 }
 
-const ELEMENT_ID = 'liferay-hello-world';
+const ELEMENT_ID = 'citysearch';
 
 if (!customElements.get(ELEMENT_ID)) {
 	customElements.define(ELEMENT_ID, WebComponent);
