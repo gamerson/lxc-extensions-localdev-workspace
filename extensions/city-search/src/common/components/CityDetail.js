@@ -27,22 +27,22 @@ class CityDetail extends React.Component {
               County
             </th>
           </tr>
-          {this.props.detail.legs.map(function (detail) {
+          {this.props.results.map(function (result) {
             return (<tr>
               <td>
-                {detail.zipcode}
+                {result.zipcode}
               </td>
               <td>
-                {detail.latitude}
+                {result.latitude}
               </td>
               <td>
-                {detail.longitude}
+                {result.longitude}
               </td>
               <td>
-                {detail.city}
+                {result.city}
               </td>
               <td>
-                {detail.state}
+                {result.state}
               </td>
             </tr>);
           })}

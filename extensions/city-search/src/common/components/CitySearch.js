@@ -11,9 +11,6 @@ class CitySearch extends React.Component {
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-
-
-    
     this.oAuth2Client = props.oAuth2Client;
   }
 
@@ -34,7 +31,7 @@ class CitySearch extends React.Component {
         'state': this.state.state
       })
     ).then((res) => {
-      this.setState({"detail":res[0]});
+      this.setState({"results":res});
     });
     event.preventDefault();
   }
@@ -74,7 +71,7 @@ class CitySearch extends React.Component {
             <td colSpan="2"><input type="submit" value="Search" /></td>
           </tr>
         </table>
-        {this.state.detail != null && <CityDetail detail={this.state.detail} />}
+        {this.state.results != null && <CityDetail results={this.state.results} />}
       </form>
     );
   }
