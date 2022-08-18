@@ -6,8 +6,7 @@ import './common/styles/index.scss';
 import api from './common/services/liferay/api';
 import { Liferay } from './common/services/liferay/liferay';
 import WebClient from './common/services/liferay/webclient';
-import FlightSearch from './common/components/FlightSearch';
-import NameForm from './common/components/NameForm';
+import CitySearch from './common/components/CitySearch';
 
 const App = ({ webClient }) => {
 	return (
@@ -15,9 +14,7 @@ const App = ({ webClient }) => {
 			<HelloWorld />
 			{Liferay.ThemeDisplay.isSignedIn() &&
 				<div>
-					<NameForm webClient={webClient} />
-					<hr />
-					<FlightSearch webClient={webClient} />
+					<CitySearch webClient={webClient} />
 				</div>
 			}
 		</div>
