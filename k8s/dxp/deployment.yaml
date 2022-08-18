@@ -20,6 +20,16 @@ spec:
     spec:
       securityContext:
         runAsUser: 0
+      initContainers:
+        - name: init-dxp-pv
+          image: #@ data.values.image
+          command:
+          - bash
+          - -c
+          - if [ -z "$(ls -A /opt/liferay/data-pv)" ]; then chown -R 1000:1000 /opt/liferay/data-pv; ls -l /opt/liferay; cp -r /opt/liferay/data/* /opt/liferay/data-pv/; fi
+          volumeMounts:
+          - name: dxp-data
+            mountPath: "/opt/liferay/data-pv"
       containers:
         - name: dxp
           image: #@ data.values.image
