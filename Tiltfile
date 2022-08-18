@@ -101,7 +101,6 @@ custom_build(
   'couponpdf', 
   "extensions/couponpdf/build.sh",
   deps=[
-    'extensions/couponpdf/configurator',
     'extensions/couponpdf/src',
     'extensions/couponpdf/pom.xml'
   ], 
@@ -129,7 +128,6 @@ custom_build(
   'uscities', 
   "extensions/uscities/build.sh",
   deps=[
-    'extensions/uscities/configurator',
     'extensions/uscities/src',
     'extensions/uscities/pom.xml'
   ], 

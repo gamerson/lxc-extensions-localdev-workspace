@@ -4,7 +4,7 @@ set -e
 
 ytt \
   -f ./k8s/extension \
-  -f extensions/uscities/configurator/uscities.client-extension-config.json \
+  -f extensions/uscities/uscities.client-extension-config.json \
   --data-value cpu=500m \
   --data-value image=uscities \
   --data-value memory=512Mi \
