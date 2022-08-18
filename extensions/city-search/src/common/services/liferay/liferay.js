@@ -8,12 +8,16 @@ const Liferay = window.Liferay || {
 		isSignedIn: () => false,
 	},
 	authToken: "",
-	OAuth: {
+	OAuth2: {
 		getAuthorizeURL: () => "",
 		getBuiltInRedirectURL: () => "",
 		getIntrospectURL: () => "",
 		getTokenURL: () => "",
 		getUserAgentApplication: (serviceName) => {}
+	},
+	OAuth2Client: {
+		FromUserAgentApplication: (userAgentApplicationId) => {return new Liferay.OAuth2Client();},
+		fetch: (url, options = {}) => {}
 	}
 };
 

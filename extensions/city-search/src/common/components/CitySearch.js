@@ -14,7 +14,7 @@ class CitySearch extends React.Component {
 
 
     
-    this.webClient = props.webClient;
+    this.oAuth2Client = props.oAuth2Client;
   }
 
   handleInputChange(event) {
@@ -28,7 +28,7 @@ class CitySearch extends React.Component {
   }
 
   handleSubmit(event) {
-    this.webClient.fetch(
+    this.oAuth2Client.fetch(
       'city/search?' + new URLSearchParams({
         'city': this.state.city,
         'state': this.state.state

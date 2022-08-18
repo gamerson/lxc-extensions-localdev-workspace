@@ -5,16 +5,15 @@ import HelloWorld from './routes/hello-world/pages/HelloWorld';
 import './common/styles/index.scss';
 import api from './common/services/liferay/api';
 import { Liferay } from './common/services/liferay/liferay';
-import WebClient from './common/services/liferay/webclient';
 import CitySearch from './common/components/CitySearch';
 
-const App = ({ webClient }) => {
+const App = ({ oAuth2Client }) => {
 	return (
 		<div>
 			<HelloWorld />
 			{Liferay.ThemeDisplay.isSignedIn() &&
 				<div>
-					<CitySearch webClient={webClient} />
+					<CitySearch oAuth2Client={oAuth2Client} />
 				</div>
 			}
 		</div>
@@ -25,12 +24,12 @@ class WebComponent extends HTMLElement {
 	constructor() {
 		super();
 
-		this.webClient = WebClient.FromUserAgentApplication('uscities');
+		this.oAuth2Client = Liferay.OAuth2Client.FromUserAgentApplication('uscities');
 	}
 
 	connectedCallback() {
 		ReactDOM.render(
-			<App webClient={this.webClient} />,
+			<App oAuth2Client={this.oAuth2Client} />,
 			this
 		);
 
