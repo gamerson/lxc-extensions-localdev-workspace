@@ -43,23 +43,54 @@ RESULT=$(
 		-H 'accept: application/json' \
 		-H 'Content-Type: application/json' \
 		-H "Authorization: Bearer ${ACCESS_TOKEN}" \
-		-d @com.liferay.object.admin.rest.dto.v1_0.ObjectDefinition/export.json \
+		-d @export.json \
 		--cacert ../ca.crt \
 		| jq -r '.')
 
-echo "RESULT: ${RESULT}"
+echo "BATCH: ${RESULT}"
 
-# PUBLISH=$(jq -r '. | if has("actions") then .actions.publish.href else false end' <<< "$RESULT")
+BATCH_EXTERNAL_REFERENCE_CODE=$(jq -r '.externalReferenceCode' <<< "$RESULT")
 
-# echo "PUBLISH: ${PUBLISH}"
+until [ \
+	"$(
+		curl \
+			-v \
+			-s \
+			-X 'GET' \
+			"https://${DXP_HOST}/o/headless-batch-engine/v1.0/import-task/by-external-reference-code/${BATCH_EXTERNAL_REFERENCE_CODE}" \
+			-H 'accept: application/json' \
+			-H "Authorization: Bearer ${ACCESS_TOKEN}" \
+			--cacert ../ca.crt \
+			| jq -r '.executeStatus')" \
+	!= "COMPLETED" ]
+do
+  sleep 1
+done
 
-# if [ "$PUBLISH" != "false" ]; then
-# 	curl \
-# 		-s \
-# 		-X 'POST' \
-# 		"${PUBLISH}" \
-# 		-H 'accept: application/json' \
-# 		-H "Authorization: Bearer ${ACCESS_TOKEN}" \
-# 		--cacert ../ca.crt \
-# 		| jq -r .
-# fi
+RESULT=$(
+	curl \
+		-v \
+		-s \
+		"https://${DXP_HOST}/o/object-admin/v1.0/object-definitions" \
+		-H 'accept: application/json' \
+		-H 'Content-Type: application/json' \
+		-H "Authorization: Bearer ${ACCESS_TOKEN}" \
+		--cacert ../ca.crt \
+		| jq -r '.')
+
+echo "GET: ${RESULT}"
+
+PUBLISH=$(jq -r '[.items[].id] | join(" ")' <<< "$RESULT")
+
+echo "PUBLISH: ${PUBLISH}"
+
+for i in $PUBLISH; do
+	curl \
+		-s \
+		-X 'POST' \
+		"https://${DXP_HOST}/o/object-admin/v1.0/object-definitions/${i}/publish" \
+		-H 'accept: application/json' \
+		-H "Authorization: Bearer ${ACCESS_TOKEN}" \
+		--cacert ../ca.crt \
+		| jq -r .
+done
