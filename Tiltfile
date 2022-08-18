@@ -24,9 +24,9 @@ k8s_yaml(
 )
 
 k8s_resource(
-   labels=['dxp'],
-   port_forwards=['8000'], 
-   objects=[
+  labels=['dxp'],
+  port_forwards=['8000'],
+  objects=[
     'dxp:ingress',
     'dxp:ingressroute',
     'dxp-data:persistentvolume',
@@ -56,14 +56,14 @@ watch_file("extensions/able-theme-css/client-extension.yaml")
 watch_file("extensions/able-theme-css/yaml.sh")
 
 k8s_resource(
-   labels=['extensions'],
-   resource_deps=['dxp'],
-   objects=[
+  labels=['extensions'],
+  resource_deps=['dxp'],
+  objects=[
     'able-theme-css-liferay.com-lxc-ext-provision-metadata:configmap',
     'able-theme-css:ingress',
     'able-theme-css:ingressroute'
   ],
-   workload='able-theme-css'
+  workload='able-theme-css'
 )
 
 # city-search
@@ -113,15 +113,15 @@ watch_file("extensions/couponpdf/configurator/")
 watch_file("extensions/couponpdf/yaml.sh")
 
 k8s_resource(
-   labels=['extensions'],
-   port_forwards=['8001'],
-   resource_deps=['dxp'],
-   objects=[
+  labels=['extensions'],
+  port_forwards=['8001'],
+  resource_deps=['dxp'],
+  objects=[
     'couponpdf-liferay.com-lxc-ext-provision-metadata:configmap', 
     'couponpdf:ingress',
     'couponpdf:ingressroute'
   ],
-   workload='couponpdf'
+  workload='couponpdf'
 )
 
 # uscities
@@ -141,15 +141,15 @@ watch_file("extensions/uscities/configurator/")
 watch_file("extensions/uscities/yaml.sh")
 
 k8s_resource(
-   labels=['extensions'],
-   port_forwards=['8002'],
-   resource_deps=['dxp'],
-   objects=[
+  labels=['extensions'],
+  port_forwards=['8002'],
+  resource_deps=['dxp'],
+  objects=[
     'uscities-liferay.com-lxc-ext-provision-metadata:configmap', 
     'uscities:ingress',
     'uscities:ingressroute'
   ],
-   workload='uscities'
+  workload='uscities'
 )
 
 update_settings(max_parallel_updates=1)
