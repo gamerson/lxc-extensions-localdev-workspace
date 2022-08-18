@@ -116,6 +116,29 @@ k8s_resource(
   workload='coupondfn'
 )
 
+# coupondata
+custom_build(
+  'coupondata',
+  "extensions/coupondata/build.sh",
+  deps=[
+    'extensions/coupondata/src'
+  ],
+  ignore=[]
+)
+
+k8s_yaml(local("extensions/coupondata/yaml.sh"))
+watch_file('extensions/coupondata/coupondata.client-extension-config.json')
+watch_file('extensions/coupondata/yaml.sh')
+
+k8s_resource(
+  labels=['extensions'],
+  resource_deps=['coupondfn'],
+  objects=[
+    'coupondata-liferay.com-lxc-ext-provision-metadata:configmap'
+  ],
+  workload='coupondata'
+)
+
 # couponpdf
 custom_build(
   'couponpdf', 
@@ -134,7 +157,7 @@ watch_file("extensions/couponpdf/yaml.sh")
 k8s_resource(
   labels=['extensions'],
   port_forwards=['8001'],
-  resource_deps=['dxp', 'coupondfn'],
+  resource_deps=['coupondata'],
   objects=[
     'couponpdf-liferay.com-lxc-ext-provision-metadata:configmap', 
     'couponpdf:ingress',
