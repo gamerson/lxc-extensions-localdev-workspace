@@ -4,7 +4,7 @@ set -e
 
 cd extensions/city-search
 
-if [ !-f "build/asset-manifest.json" ]; then
+if [ ! -f "build/asset-manifest.json" ]; then
   yarn install 1>&2
   yarn build-local 1>&2
 fi
