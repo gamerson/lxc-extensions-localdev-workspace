@@ -79,19 +79,7 @@ custom_build(
   ignore=[]
 )
 
-# coupondfn
-custom_build(
-  'coupondfn',
-  "extensions/coupondfn/build.sh",
-  deps=[
-    'extensions/coupondfn/src'
-  ],
-  ignore=[]
-)
-
 k8s_yaml(local("extensions/city-search/yaml.sh"))
-
-watch_file("extensions/city-search/configurator/")
 watch_file("extensions/city-search/yaml.sh")
 
 k8s_resource(
@@ -103,9 +91,21 @@ k8s_resource(
     'city-search:ingressroute'
   ],
    workload='city-search'
-=======
-read_file('extensions/coupondfn/coupondfn.client-extension-config.json')
+)
+
+# coupondfn
+custom_build(
+  'coupondfn',
+  "extensions/coupondfn/build.sh",
+  deps=[
+    'extensions/coupondfn/src'
+  ],
+  ignore=[]
+)
+
 k8s_yaml(local("extensions/coupondfn/yaml.sh"))
+watch_file('extensions/coupondfn/coupondfn.client-extension-config.json')
+watch_file('extensions/coupondfn/yaml.sh')
 
 k8s_resource(
   labels=['extensions'],
@@ -114,7 +114,6 @@ k8s_resource(
     'coupondfn-liferay.com-lxc-ext-provision-metadata:configmap'
   ],
   workload='coupondfn'
->>>>>>> 14f7263 (coupon ObjectDefinition)
 )
 
 # couponpdf
@@ -129,13 +128,13 @@ custom_build(
 )
 
 k8s_yaml(local("extensions/couponpdf/yaml.sh"))
-watch_file("extensions/couponpdf/configurator/")
+watch_file("extensions/couponpdf/couponpdf.client-extension-config.json")
 watch_file("extensions/couponpdf/yaml.sh")
 
 k8s_resource(
   labels=['extensions'],
   port_forwards=['8001'],
-  resource_deps=['dxp'],
+  resource_deps=['dxp', 'coupondfn'],
   objects=[
     'couponpdf-liferay.com-lxc-ext-provision-metadata:configmap', 
     'couponpdf:ingress',
@@ -156,7 +155,7 @@ custom_build(
 )
 
 k8s_yaml(local("extensions/uscities/yaml.sh"))
-watch_file("extensions/uscities/configurator/")
+watch_file("extensions/uscities/uscities.client-extension-config.json")
 watch_file("extensions/uscities/yaml.sh")
 
 k8s_resource(
