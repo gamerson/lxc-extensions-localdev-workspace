@@ -1,0 +1,12 @@
+{
+	"kind": "Job",
+	"id": "coupondata",
+	"cpu": 0.2,
+	"scale": 1,
+	"memory": 300,
+	"environments": {
+		"infra": {
+			"deploy": false
+		}
+	}
+}

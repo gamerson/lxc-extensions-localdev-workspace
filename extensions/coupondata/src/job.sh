@@ -15,8 +15,8 @@ tree /etc/liferay/lxc/ext-init-metadata
 tree /etc/liferay/lxc/dxp-metadata
 
 DXP_HOST=$(cat /etc/liferay/lxc/dxp-metadata/com.liferay.lxc.dxp.mainDomain)
-OAUTH2_CLIENTID=$(cat /etc/liferay/lxc/ext-init-metadata/coupondfn.oauth2.headless.server.client.id)
-OAUTH2_SECRET=$(cat /etc/liferay/lxc/ext-init-metadata/coupondfn.oauth2.headless.server.client.secret)
+OAUTH2_CLIENTID=$(cat /etc/liferay/lxc/ext-init-metadata/coupondata.oauth2.headless.server.client.id)
+OAUTH2_SECRET=$(cat /etc/liferay/lxc/ext-init-metadata/coupondata.oauth2.headless.server.client.secret)
 
 echo "DXP_HOST: ${DXP_HOST}"
 echo "OAUTH2_CLIENTID: ${OAUTH2_CLIENTID}"
@@ -39,7 +39,7 @@ RESULT=$(
 		-v \
 		-s \
 		-X 'POST' \
-		"https://${DXP_HOST}/o/object-admin/v1.0/object-definitions/batch" \
+		"https://${DXP_HOST}/o/c/coupons/batch" \
 		-H 'accept: application/json' \
 		-H 'Content-Type: application/json' \
 		-H "Authorization: Bearer ${ACCESS_TOKEN}" \
@@ -65,32 +65,4 @@ until [ \
 	!= "COMPLETED" ]
 do
   sleep 1
-done
-
-RESULT=$(
-	curl \
-		-v \
-		-s \
-		"https://${DXP_HOST}/o/object-admin/v1.0/object-definitions" \
-		-H 'accept: application/json' \
-		-H 'Content-Type: application/json' \
-		-H "Authorization: Bearer ${ACCESS_TOKEN}" \
-		--cacert ../ca.crt \
-		| jq -r '.')
-
-echo "GET: ${RESULT}"
-
-PUBLISH=$(jq -r '[.items[].id] | join(" ")' <<< "$RESULT")
-
-echo "PUBLISH: ${PUBLISH}"
-
-for i in $PUBLISH; do
-	curl \
-		-s \
-		-X 'POST' \
-		"https://${DXP_HOST}/o/object-admin/v1.0/object-definitions/${i}/publish" \
-		-H 'accept: application/json' \
-		-H "Authorization: Bearer ${ACCESS_TOKEN}" \
-		--cacert ../ca.crt \
-		| jq -r .
 done
