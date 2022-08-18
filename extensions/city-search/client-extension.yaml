@@ -1,8 +1,8 @@
-citysearch:
+city-search:
   cssURLs:
     - main.css
-  friendlyURLMapping: citysearch
-  htmlElementName: citysearch
+  friendlyURLMapping: city-search
+  htmlElementName: city-search
   instanceable: false
   name: City Search
   portletCategoryName: category.remote-apps

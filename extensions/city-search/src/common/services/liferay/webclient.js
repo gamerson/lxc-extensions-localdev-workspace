@@ -6,9 +6,9 @@ class WebClient {
     static FromParameters({
             clientId,
             homePageURL,
-            authorizeURL = Liferay.OAuth.getAuthorizeURL(),
-            tokenURL = Liferay.OAuth.getTokenURL(),
-            redirectURIs = [Liferay.OAuth.getBuiltInRedirectURL()],
+            authorizeURL = Liferay.OAuth2.getAuthorizeURL(),
+            tokenURL = Liferay.OAuth2.getTokenURL(),
+            redirectURIs = [Liferay.OAuth2.getBuiltInRedirectURL()],
         }) {
         const webClient = new WebClient();
         webClient.clientId = clientId;
@@ -21,12 +21,12 @@ class WebClient {
     }
 
     static FromUserAgentApplication(userAgentApplicationId) {
-        const userAgentApplication = Liferay.OAuth.getUserAgentApplication(userAgentApplicationId);
+        const userAgentApplication = Liferay.OAuth2.getUserAgentApplication(userAgentApplicationId);
         const webClient = new WebClient();
         webClient.clientId = userAgentApplication.clientId;
         webClient.homePageURL = userAgentApplication.homePageURL;
-        webClient.authorizeURL = Liferay.OAuth.getAuthorizeURL();
-        webClient.tokenURL = Liferay.OAuth.getTokenURL();
+        webClient.authorizeURL = Liferay.OAuth2.getAuthorizeURL();
+        webClient.tokenURL = Liferay.OAuth2.getTokenURL();
         webClient.redirectURIs = userAgentApplication.redirectURIs
         webClient.encodedRedirectURL = encodeURIComponent(webClient.redirectURIs[0]);
         return webClient;

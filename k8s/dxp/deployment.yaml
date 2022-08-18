@@ -58,3 +58,10 @@ spec:
             - containerPort: 8080
             - containerPort: 8000
             - containerPort: 11311
+          volumeMounts:
+            - name: dxp-data
+              mountPath: "/opt/liferay/data"
+      volumes:
+        - name: dxp-data
+          persistentVolumeClaim:
+            claimName: dxp-data

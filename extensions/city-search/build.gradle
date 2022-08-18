@@ -11,13 +11,13 @@ createClientExtensionConfig {
   doLast {
     def clientExtension = new org.yaml.snakeyaml.Yaml().load(new FileInputStream(file("client-extension.yaml")))
     def manifest = new groovy.json.JsonSlurper().parse(file("$buildDir/asset-manifest.json"))
-    def clientExtensionConfig = file("$buildDir/citysearch.client-extension-config.json")
-    clientExtension.citysearch.cssURLs.each { url ->
+    def clientExtensionConfig = file("$buildDir/city-search.client-extension-config.json")
+    clientExtension["city-search"].cssURLs.each { url ->
       manifest.files.find { it.key == url }.each {
         clientExtensionConfig.text = clientExtensionConfig.text.replaceAll(url, it.value)
       }
     }
-    clientExtension.citysearch.urls.each { url ->
+    clientExtension["city-search"].urls.each { url ->
       manifest.files.find { it.key == url }.each {
         clientExtensionConfig.text = clientExtensionConfig.text.replaceAll(url, it.value)
       }

@@ -1,3 +1,7 @@
+# watch yaml template directories
+watch_file('k8s/dxp/')
+watch_file('k8s/extension/')
+
 # DXP
 custom_build(
   'dxp', 
@@ -24,7 +28,9 @@ k8s_resource(
    port_forwards=['8000'], 
    objects=[
     'dxp:ingress',
-    'dxp:ingressroute'
+    'dxp:ingressroute',
+    'dxp-data:persistentvolume',
+    'dxp-data:persistentvolumeclaim'
    ],
    workload='dxp'
 )
@@ -46,6 +52,9 @@ custom_build(
 
 k8s_yaml(local("extensions/able-theme-css/yaml.sh"))
 
+watch_file("extensions/able-theme-css/client-extension.yaml")
+watch_file("extensions/able-theme-css/yaml.sh")
+
 k8s_resource(
    labels=['extensions'],
    resource_deps=['dxp'],
@@ -57,32 +66,34 @@ k8s_resource(
    workload='able-theme-css'
 )
 
-# citysearch
+# city-search
 custom_build(
-  'citysearch',
-  "extensions/citysearch/build.sh",
+  'city-search',
+  "extensions/city-search/build.sh",
   deps=[
-    'extensions/citysearch/build.gradle',
-    'extensions/citysearch/client-extension.yaml',
-    'extensions/citysearch/package.json',
-    'extensions/citysearch/src'
+    'extensions/city-search/build.gradle',
+    'extensions/city-search/client-extension.yaml',
+    'extensions/city-search/package.json',
+    'extensions/city-search/src'
   ],
   ignore=[]
 )
 
 
-k8s_yaml(local("extensions/citysearch/yaml.sh"))
-read_file("extensions/citysearch/.citysearch.yaml")
+k8s_yaml(local("extensions/city-search/yaml.sh"))
+
+watch_file("extensions/city-search/configurator/")
+watch_file("extensions/city-search/yaml.sh")
 
 k8s_resource(
    labels=['extensions'],
    resource_deps=['dxp'],
    objects=[
-    'citysearch-liferay.com-lxc-ext-provision-metadata:configmap',
-    'citysearch:ingress',
-    'citysearch:ingressroute'
+    'city-search-liferay.com-lxc-ext-provision-metadata:configmap',
+    'city-search:ingress',
+    'city-search:ingressroute'
   ],
-   workload='citysearch'
+   workload='city-search'
 )
 
 # couponpdf
@@ -98,6 +109,8 @@ custom_build(
 )
 
 k8s_yaml(local("extensions/couponpdf/yaml.sh"))
+watch_file("extensions/couponpdf/configurator/")
+watch_file("extensions/couponpdf/yaml.sh")
 
 k8s_resource(
    labels=['extensions'],
@@ -124,6 +137,8 @@ custom_build(
 )
 
 k8s_yaml(local("extensions/uscities/yaml.sh"))
+watch_file("extensions/uscities/configurator/")
+watch_file("extensions/uscities/yaml.sh")
 
 k8s_resource(
    labels=['extensions'],
