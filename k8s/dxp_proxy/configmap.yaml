@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dxp-proxy-conf
+data:
+  nginx.conf: |
+    user nginx;
+    worker_processes  1;
+    events {
+        worker_connections  10000;
+    }
+    http {
+      include /etc/nginx/virtualhost/virtualhost.conf;
+    }
+  virtualhost.conf: |
+    server {
+      listen 80 default_server;
+      root /usr/local/app;
+      access_log /var/log/nginx/app.access_log;
+      error_log /var/log/nginx/app.error_log;
+
+      if ($http_x_forwarded_proto = "http") {
+          return 301 https://$host$request_uri;
+      }
+
+      location / {
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
+        proxy_set_header X-Forwarded-Port $http_x_forwarded_port;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $http_x_forwarded_for;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $http_connection;
+        proxy_hide_header liferay-portal;
+        proxy_pass http://host.k3d.internal:8080;
+        proxy_http_version 1.1;
+      }
+    }

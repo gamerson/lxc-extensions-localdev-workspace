@@ -2,7 +2,7 @@
 
 set -e
 
-HOST_ALIASES="['dxp','able-theme-css','couponpdf','uscities']"
+HOST_ALIASES="['dxp']"
 
 ytt -f ./k8s/k3d --data-value-yaml "hostAliases=$HOST_ALIASES" > .cluster_config.yaml
 

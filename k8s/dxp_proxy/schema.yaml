@@ -1,0 +1,4 @@
+#@data/values-schema
+---
+image: "nginx"
+proxiedHostnamePort: "host.k3d.internal:8080"

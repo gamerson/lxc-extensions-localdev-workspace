@@ -29,18 +29,22 @@ spec:
           - containerPort: 80
           - containerPort: #@ data.values.debugPort
         volumeMounts:
+          #@ if data.values.dxpMetadata:
           - mountPath: /etc/liferay/lxc/dxp-metadata
             name: lxc-dxp-metadata
             readOnly: true
+          #@ end
           #@ if data.values.initMetadata:
           - mountPath: /etc/liferay/lxc/ext-init-metadata
             name: lxc-ext-init-metadata
             readOnly: true
           #@ end
       volumes:
+        #@ if data.values.dxpMetadata:
         - name: lxc-dxp-metadata
           configMap:
             name: #@ "{}-lxc-dxp-metadata".format(data.values.virtualInstanceId)
+        #@ end
         #@ if data.values.initMetadata:
         - name: lxc-ext-init-metadata
           configMap:
