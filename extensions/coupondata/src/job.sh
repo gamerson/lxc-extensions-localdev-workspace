@@ -34,10 +34,10 @@ ACCESS_TOKEN=$(\
 
 echo "ACCESS_TOKEN: ${ACCESS_TOKEN}"
 
-RESULT=$(
+RESULT=$(\
 	curl \
-		-v \
 		-s \
+		-v \
 		-X 'POST' \
 		"https://${DXP_HOST}/o/c/coupons/batch" \
 		-H 'accept: application/json' \
@@ -49,20 +49,27 @@ RESULT=$(
 
 echo "BATCH: ${RESULT}"
 
+if [ "${RESULT}x" == "x" ]; then
+	echo "An error occured"
+	exit 1
+fi
+
 BATCH_EXTERNAL_REFERENCE_CODE=$(jq -r '.externalReferenceCode' <<< "$RESULT")
 
-until [ \
-	"$(
+BATCH_STATUS="INITIAL"
+
+until [ "${BATCH_STATUS}" == "COMPLETED" ] || [ "${BATCH_STATUS}" == "FAILED" ] || [ "${BATCH_STATUS}" == "NOT_FOUND" ]; do
+	RESULT=$(\
 		curl \
-			-v \
 			-s \
 			-X 'GET' \
 			"https://${DXP_HOST}/o/headless-batch-engine/v1.0/import-task/by-external-reference-code/${BATCH_EXTERNAL_REFERENCE_CODE}" \
 			-H 'accept: application/json' \
 			-H "Authorization: Bearer ${ACCESS_TOKEN}" \
 			--cacert ../ca.crt \
-			| jq -r '.executeStatus')" \
-	!= "COMPLETED" ]
-do
-  sleep 1
+			| jq -r '.')
+
+	echo "BATCH: ${RESULT}"
+
+	BATCH_STATUS=$(jq -r '.executeStatus//.status' <<< "$RESULT")
 done
