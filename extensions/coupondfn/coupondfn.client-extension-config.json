@@ -1,10 +1,10 @@
 {
   "com.liferay.oauth2.provider.configuration.OAuth2ProviderApplicationHeadlessServerConfiguration~coupondfn": {
-      "homePageURL": "https://$[conf:ext.lxc.liferay.com.mainDomain]",
-      "scopes": [
-        "Liferay.Headless.Batch.Engine.everything",
-        "Liferay.Object.Admin.REST.everything"
-      ],
-      "userAccountEmail": "test@liferay.com"
+    "homePageURL": "https://$[conf:ext.lxc.liferay.com.mainDomain]",
+    "scopes": [
+      "Liferay.Headless.Batch.Engine.everything",
+      "Liferay.Object.Admin.REST.everything"
+    ],
+    "userAccountEmail": "test@liferay.com"
   }
 }
