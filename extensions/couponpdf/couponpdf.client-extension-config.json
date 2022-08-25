@@ -5,6 +5,6 @@
     "scopes": [
       "C_Coupon.everything"
     ],
-    "userAccountEmail": "test@liferay.com"
+    "userAccountEmailAddress": "test@liferay.com"
   }
 }
