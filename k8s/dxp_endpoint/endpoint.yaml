@@ -1,0 +1,10 @@
+#@ load("@ytt:data", "data")
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: dxp-proxy
+subsets:
+  - addresses:
+      - ip: #@ data.values.dockerHostAddress
+    ports:
+      - port: 8080

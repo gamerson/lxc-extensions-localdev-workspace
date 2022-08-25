@@ -45,7 +45,7 @@ public class CityApiController {
     }
 	
 	@GetMapping(value = "/search")
-	public ResponseEntity<List<CityDetail>> search(@RequestParam String city, @RequestParam String state, @RequestParam String zipcode) throws IOException {
+	public ResponseEntity<List<CityDetail>> search(@RequestParam(required = false) String city, @RequestParam(required=false) String state, @RequestParam(required=false) String zipcode) throws IOException {
 
 		List<CityDetail> results = _cityDetails.stream().filter(detail -> {
 			if (city == null || city.isEmpty())

@@ -1,10 +1,9 @@
-#@ load("@ytt:data", "data")
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: dxp
+  name: dxp-proxy
   labels:
-    app: dxp
+    app: dxp-proxy
 spec:
   entryPoints:
     - websecure
@@ -12,7 +11,7 @@ spec:
   - kind: Rule
     match: dxp.localdev.me
     services:
-    - name: dxp
+    - name: dxp-proxy
       port: 80
   tls:
     secretName: localdev-tls-secret

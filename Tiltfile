@@ -1,38 +1,18 @@
-# watch yaml template directories
-watch_file('k8s/dxp/')
+watch_file('k8s/dxp_endpoint/')
 watch_file('k8s/extension/')
+watch_file('k8s/extension_job/')
 
-# DXP
-custom_build(
-  'dxp', 
-  "./gradlew :cleanDockerImage :buildDockerImage -Pdocker.image.id=$EXPECTED_REF", 
-  deps=[
-    'build.gradle',
-    'configs/',
-    'gradle.properties',
-    'settings.gradle'
-  ],
-  ignore=[]
-)
-
-k8s_yaml(
-  local(
-    """ytt \
-      -f k8s/dxp  \
-      --data-value image=dxp"""
-  )
-)
+k8s_yaml(local("k8s/dxp_endpoint/yaml.sh"))
 
 k8s_resource(
-  labels=['dxp'],
-  port_forwards=['8000'],
+  labels=['dxp-proxy'],
   objects=[
-    'dxp:ingress',
-    'dxp:ingressroute',
-    'dxp-data:persistentvolume',
-    'dxp-data:persistentvolumeclaim'
+    'dxp-proxy:endpoints',
+    'dxp-proxy:ingress',
+    'dxp-proxy:ingressroute',
+    'dxp-proxy:service'
    ],
-   workload='dxp'
+   new_name='dxp-proxy'
 )
 
 # Extensions
@@ -57,7 +37,6 @@ watch_file("extensions/able-theme-css/yaml.sh")
 
 k8s_resource(
   labels=['extensions'],
-  resource_deps=['dxp'],
   objects=[
     'able-theme-css-liferay.com-lxc-ext-provision-metadata:configmap',
     'able-theme-css:ingress',
@@ -84,7 +63,6 @@ watch_file("extensions/city-search/yaml.sh")
 
 k8s_resource(
    labels=['extensions'],
-   resource_deps=['dxp'],
    objects=[
     'city-search-liferay.com-lxc-ext-provision-metadata:configmap',
     'city-search:ingress',
@@ -109,7 +87,6 @@ watch_file('extensions/coupondfn/yaml.sh')
 
 k8s_resource(
   labels=['extensions'],
-  resource_deps=['dxp'],
   objects=[
     'coupondfn-liferay.com-lxc-ext-provision-metadata:configmap'
   ],
@@ -132,7 +109,6 @@ watch_file('extensions/coupondata/yaml.sh')
 
 k8s_resource(
   labels=['extensions'],
-  resource_deps=['coupondfn'],
   objects=[
     'coupondata-liferay.com-lxc-ext-provision-metadata:configmap'
   ],
@@ -157,7 +133,6 @@ watch_file("extensions/couponpdf/yaml.sh")
 k8s_resource(
   labels=['extensions'],
   port_forwards=['8001'],
-  resource_deps=['coupondata'],
   objects=[
     'couponpdf-liferay.com-lxc-ext-provision-metadata:configmap', 
     'couponpdf:ingress',
@@ -184,7 +159,6 @@ watch_file("extensions/uscities/yaml.sh")
 k8s_resource(
   labels=['extensions'],
   port_forwards=['8002'],
-  resource_deps=['dxp'],
   objects=[
     'uscities-liferay.com-lxc-ext-provision-metadata:configmap', 
     'uscities:ingress',
