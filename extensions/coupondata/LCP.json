@@ -4,6 +4,7 @@
 	"cpu": 0.2,
 	"scale": 1,
 	"memory": 300,
+	"dependencies": ["coupondfn"],
 	"environments": {
 		"infra": {
 			"deploy": false
