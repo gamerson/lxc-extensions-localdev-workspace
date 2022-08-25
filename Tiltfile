@@ -17,60 +17,6 @@ k8s_resource(
 
 # Extensions
 
-# able-theme-css
-custom_build(
-  'able-theme-css',
-  "extensions/able-theme-css/build.sh",
-  deps=[
-    'extensions/able-theme-css/build.gradle',
-    'extensions/able-theme-css/client-extension.yaml',
-    'extensions/able-theme-css/package.json',
-    'extensions/able-theme-css/src'
-  ],
-  ignore=[]
-)
-
-k8s_yaml(local("extensions/able-theme-css/yaml.sh"))
-
-watch_file("extensions/able-theme-css/client-extension.yaml")
-watch_file("extensions/able-theme-css/yaml.sh")
-
-k8s_resource(
-  labels=['extensions'],
-  objects=[
-    'able-theme-css-liferay.com-lxc-ext-provision-metadata:configmap',
-    'able-theme-css:ingress',
-    'able-theme-css:ingressroute'
-  ],
-  workload='able-theme-css'
-)
-
-# city-search
-custom_build(
-  'city-search',
-  "extensions/city-search/build.sh",
-  deps=[
-    'extensions/city-search/build.gradle',
-    'extensions/city-search/client-extension.yaml',
-    'extensions/city-search/package.json',
-    'extensions/city-search/src'
-  ],
-  ignore=[]
-)
-
-k8s_yaml(local("extensions/city-search/yaml.sh"))
-watch_file("extensions/city-search/yaml.sh")
-
-k8s_resource(
-   labels=['extensions'],
-   objects=[
-    'city-search-liferay.com-lxc-ext-provision-metadata:configmap',
-    'city-search:ingress',
-    'city-search:ingressroute'
-  ],
-   workload='city-search'
-)
-
 # coupondfn
 custom_build(
   'coupondfn',
@@ -112,6 +58,7 @@ k8s_resource(
   objects=[
     'coupondata-liferay.com-lxc-ext-provision-metadata:configmap'
   ],
+  resource_deps=['coupondfn'],
   workload='coupondata'
 )
 
@@ -138,6 +85,7 @@ k8s_resource(
     'couponpdf:ingress',
     'couponpdf:ingressroute'
   ],
+  resource_deps=['coupondfn'],
   workload='couponpdf'
 )
 

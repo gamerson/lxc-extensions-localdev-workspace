@@ -23,8 +23,6 @@ gradle.projectsEvaluated {
   buildDockerImage.dependsOn = buildDockerImage.dependsOn.findAll { !it.path.startsWith(":extensions") }
 }
 
-buildDockerImage.pull = false
-
 logsDockerContainer.dependsOn startDockerContainer
 
 task runDockerContainer {
