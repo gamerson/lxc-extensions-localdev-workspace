@@ -1,4 +1,7 @@
 createDockerContainer {
+  hostConfig.binds = ["${projectDir}/dockerHome/data":"/opt/liferay/data"]
+  hostConfig.network = "k3d-lxc-localdev"
+
 	withEnvVar "KUBERNETES_SERVICE_HOST", "k3d-lxc-localdev-server-0"
 	withEnvVar "KUBERNETES_SERVICE_PORT", "6443"
 	withEnvVar "KUBERNETES_NAMESPACE", "default"
@@ -16,7 +19,6 @@ createDockerContainer {
     }
     withEnvVar "KUBERNETES_TOKEN", output.toString()
   }
-  hostConfig.network = "k3d-lxc-localdev"
 }
 
 gradle.projectsEvaluated {
