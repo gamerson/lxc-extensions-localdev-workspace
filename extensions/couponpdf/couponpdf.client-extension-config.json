@@ -5,6 +5,6 @@
     "scopes": [
       "C_Coupon.everything"
     ],
-    "userAccountEmailAddress": "test@liferay.com"
+    "userAccountEmailAddress": "test@$[conf:dxp.lxc.liferay.com.virtualInstanceId]"
   }
 }
