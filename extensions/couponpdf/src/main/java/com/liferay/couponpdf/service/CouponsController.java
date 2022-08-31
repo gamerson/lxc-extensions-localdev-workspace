@@ -24,9 +24,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -42,12 +42,12 @@ public class CouponsController {
 
   @Autowired private WebClient _webClient;
 
-  @PostMapping(
+  @GetMapping(
       produces = MediaType.APPLICATION_PDF_VALUE,
-      consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
-      value = "/print")
+      value = {"/print", "/print/{couponId}"})
   public ResponseEntity<StreamingResponseBody> printCoupon(
-      @RequestParam(name = "couponId") String couponId, HttpServletResponse response) {
+      @PathVariable(name = "couponId", required = false) String couponId,
+      HttpServletResponse response) {
 
     _logger.debug("couponId = " + couponId);
 
