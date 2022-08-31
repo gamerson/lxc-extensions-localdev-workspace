@@ -1,3 +1,4 @@
+#@ load("@ytt:data", "data")
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
@@ -9,7 +10,7 @@ spec:
     - websecure
   routes:
   - kind: Rule
-    match: dxp.localdev.me
+    match: #@ data.values.virtualInstanceId
     services:
     - name: dxp-proxy
       port: 80

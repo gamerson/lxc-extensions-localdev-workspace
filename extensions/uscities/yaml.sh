@@ -10,4 +10,5 @@ ytt \
   --data-value memory=512Mi \
   --data-value serviceId=uscities \
   --data-value-yaml debugPort=8002 \
+  --data-value "virtualInstanceId=$1" \
   --data-value-yaml initMetadata=true

@@ -9,4 +9,5 @@ ytt \
   --data-value image=coupondfn \
   --data-value memory=300Mi \
   --data-value serviceId=coupondfn \
+  --data-value "virtualInstanceId=$1" \
   --data-value-yaml initMetadata=true
