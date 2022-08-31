@@ -4,10 +4,6 @@ set -e
 
 cd "$(dirname "$0")"
 
-if [[ ! -z "${EXPECTED_REF}" ]]; then
-  IMAGE=${EXPECTED_REF}
-fi
-
 ../../gradlew :extensions:city-search:clean
 
 yarn install && yarn build-local
@@ -16,8 +12,6 @@ yarn install && yarn build-local
 
 cd dist
 
-unzip -o city-search.zip
+DEPLOY=../../../build/docker/client-extensions/
 
-docker build -t $IMAGE .
-
-tilt trigger "(Tiltfile)"
+cp -f city-search.zip "${DEPLOY}city-search.zip"
