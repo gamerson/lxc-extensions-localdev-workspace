@@ -7,4 +7,4 @@ dxpMetadata: #@ True
 initMetadata: #@ False
 memory: "50Mi"
 serviceId: ""
-virtualInstanceId: liferay.com
+virtualInstanceId: ""

@@ -1,8 +1,10 @@
+virtual_instance_id="dxp.localdev.me"
+
 watch_file('k8s/dxp_endpoint/')
 watch_file('k8s/extension/')
 watch_file('k8s/extension_job/')
 
-k8s_yaml(local("k8s/dxp_endpoint/yaml.sh"))
+k8s_yaml(local(["k8s/dxp_endpoint/yaml.sh", virtual_instance_id]))
 
 k8s_resource(
   labels=['dxp-proxy'],
@@ -17,102 +19,59 @@ k8s_resource(
 
 # Extensions
 
+def process_extension(
+    name, source_deps = [], objects = [], port_forwards = [], resource_deps = []):
+  custom_build(
+    name,
+    'extensions/%s/build.sh' % name,
+    deps=['extensions/%s/src' % name] + source_deps,
+    ignore=[]
+  )
+
+  k8s_yaml(local(["extensions/%s/yaml.sh" % name, virtual_instance_id]))
+  watch_file('extensions/%s/%s.client-extension-config.json' % (name, name))
+  watch_file('extensions/%s/yaml.sh' % name)
+
+  k8s_resource(
+    labels=['extensions'],
+    port_forwards=port_forwards,
+    objects=['%s-%s-lxc-ext-provision-metadata:configmap' % (name, virtual_instance_id)] + objects,
+    resource_deps=resource_deps,
+    workload=name
+  )
+
 # coupondfn
-custom_build(
-  'coupondfn',
-  "extensions/coupondfn/build.sh",
-  deps=[
-    'extensions/coupondfn/src'
-  ],
-  ignore=[]
-)
-
-k8s_yaml(local("extensions/coupondfn/yaml.sh"))
-watch_file('extensions/coupondfn/coupondfn.client-extension-config.json')
-watch_file('extensions/coupondfn/yaml.sh')
-
-k8s_resource(
-  labels=['extensions'],
-  objects=[
-    'coupondfn-liferay.com-lxc-ext-provision-metadata:configmap'
-  ],
-  workload='coupondfn'
-)
+process_extension(
+  name='coupondfn')
 
 # coupondata
-custom_build(
-  'coupondata',
-  "extensions/coupondata/build.sh",
-  deps=[
-    'extensions/coupondata/src'
-  ],
-  ignore=[]
-)
-
-k8s_yaml(local("extensions/coupondata/yaml.sh"))
-watch_file('extensions/coupondata/coupondata.client-extension-config.json')
-watch_file('extensions/coupondata/yaml.sh')
-
-k8s_resource(
-  labels=['extensions'],
-  objects=[
-    'coupondata-liferay.com-lxc-ext-provision-metadata:configmap'
-  ],
-  resource_deps=['coupondfn'],
-  workload='coupondata'
-)
+process_extension(
+  name='coupondata',
+  resource_deps=['coupondfn'])
 
 # couponpdf
-custom_build(
-  'couponpdf', 
-  "extensions/couponpdf/build.sh",
-  deps=[
-    'extensions/couponpdf/src',
+process_extension(
+  name='couponpdf',
+  source_deps=[
     'extensions/couponpdf/pom.xml'
   ], 
-  ignore=[]
-)
-
-k8s_yaml(local("extensions/couponpdf/yaml.sh"))
-watch_file("extensions/couponpdf/couponpdf.client-extension-config.json")
-watch_file("extensions/couponpdf/yaml.sh")
-
-k8s_resource(
-  labels=['extensions'],
-  port_forwards=['8001'],
   objects=[
-    'couponpdf-liferay.com-lxc-ext-provision-metadata:configmap', 
     'couponpdf:ingress',
     'couponpdf:ingressroute'
   ],
-  resource_deps=['coupondfn'],
-  workload='couponpdf'
-)
+  port_forwards=['8001'],
+  resource_deps=['coupondfn'])
 
 # uscities
-custom_build(
-  'uscities', 
-  "extensions/uscities/build.sh",
-  deps=[
-    'extensions/uscities/src',
+process_extension(
+  name='uscities',
+  source_deps=[
     'extensions/uscities/pom.xml'
-  ], 
-  ignore=[]
-)
-
-k8s_yaml(local("extensions/uscities/yaml.sh"))
-watch_file("extensions/uscities/uscities.client-extension-config.json")
-watch_file("extensions/uscities/yaml.sh")
-
-k8s_resource(
-  labels=['extensions'],
-  port_forwards=['8002'],
+  ],
   objects=[
-    'uscities-liferay.com-lxc-ext-provision-metadata:configmap', 
     'uscities:ingress',
     'uscities:ingressroute'
   ],
-  workload='uscities'
-)
+  port_forwards=['8002'])
 
 update_settings(max_parallel_updates=1)
