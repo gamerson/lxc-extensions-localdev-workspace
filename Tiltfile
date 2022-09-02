@@ -1,4 +1,4 @@
-virtual_instance_id="dxp.localdev.me"
+virtual_instance_id="vi.localdev.me"
 
 watch_file('k8s/dxp_endpoint/')
 watch_file('k8s/extension/')

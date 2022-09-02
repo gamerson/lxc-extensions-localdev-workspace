@@ -7,6 +7,16 @@ metadata:
     app: dxp-proxy
 spec:
   rules:
+  - host: dxp.localdev.me
+    http:
+      paths:
+      - backend:
+          service:
+            name: dxp-proxy
+            port:
+              number: 80
+        path: /
+        pathType: ImplementationSpecific
   - host: #@ data.values.virtualInstanceId
     http:
       paths:

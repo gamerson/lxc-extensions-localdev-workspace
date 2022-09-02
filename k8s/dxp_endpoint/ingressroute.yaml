@@ -10,6 +10,11 @@ spec:
     - websecure
   routes:
   - kind: Rule
+    match: dxp.localdev.me
+    services:
+    - name: dxp-proxy
+      port: 80
+  - kind: Rule
     match: #@ data.values.virtualInstanceId
     services:
     - name: dxp-proxy
