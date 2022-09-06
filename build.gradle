@@ -1,5 +1,5 @@
 createDockerContainer {
-  hostConfig.binds = ["${projectDir}/dockerHome/data":"/opt/liferay/data"]
+  hostConfig.binds = ["liferayData":"/opt/liferay/data:rw"]
   hostConfig.network = "k3d-lxc-localdev"
 
 	withEnvVar "KUBERNETES_SERVICE_HOST", "k3d-lxc-localdev-server-0"
