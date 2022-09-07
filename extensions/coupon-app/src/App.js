@@ -9,28 +9,16 @@ function App() {
 
   function getYourCoupon() {
     setBtnText('Please wait ..');
-   fetch(process.env.REACT_APP_ASSIGN_NEXT_COUPON_API + '?p_auth=' + window.Liferay.authToken, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        cUserId: window.Liferay.ThemeDisplay.getUserId()
-      })
+    fetch(
+      process.env.REACT_APP_PRINT_API, {
+      method: 'GET',
+      headers: { 'Accept': 'application/pdf' }
     })
-      .then(res => {
-        // Unfortunately, fetch doesn't send (404 error) into the cache itself
-        // You have to send it, as I have done below
-        if(res.status >= 400) {
-            throw new Error("Server responds with error!");
-        }
-        return res.json();
-		})
-      .then(data => {
-        setBtnText('Your Coupon Code is ' + data.id );
-        
-		setTimeout(() => {
-          setBtnText('Get your coupon now!');
-        }, 10000);
-      })
+    .then( res => res.blob() )
+    .then( blob => {
+      var file = window.URL.createObjectURL(blob);
+      window.location.assign(file);
+    })
 		.catch((error) => {
             setBtnText('Error Occurred');
         })
