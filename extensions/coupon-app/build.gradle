@@ -1,0 +1,34 @@
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath group: 'org.yaml', name: 'snakeyaml', version: '1.21'
+  }
+}
+
+createClientExtensionConfig {
+  doLast {
+    def clientExtension = new org.yaml.snakeyaml.Yaml().load(new FileInputStream(file("client-extension.yaml")))
+    def manifest = new groovy.json.JsonSlurper().parse(file("$buildDir/asset-manifest.json"))
+    def clientExtensionConfig = file("$buildDir/coupon-app.client-extension-config.json")
+    clientExtension["coupon-app"].cssURLs.each { url ->
+      manifest.files.find { it.key == url }.each {
+        clientExtensionConfig.text = clientExtensionConfig.text.replaceAll(url, it.value)
+      }
+    }
+    clientExtension["coupon-app"].urls.each { url ->
+      manifest.files.find { it.key == url }.each {
+        clientExtensionConfig.text = clientExtensionConfig.text.replaceAll(url, it.value)
+      }
+    }
+    //clientExtensionConfig.text = clientExtensionConfig.text.replaceAll("\"default\"", "\"dxp.localdev.me\"")
+  }
+}
+
+buildClientExtension {
+	from('build/') {
+		include('static/**/*')
+		into('static')
+	}
+}
