@@ -9,7 +9,7 @@ class WebComponent extends HTMLElement {
   }
 }
 
-const ELEMENT_ID = 'coupon-remote-app';
+const ELEMENT_ID = 'coupon-app';
 
 if (!customElements.get(ELEMENT_ID)) {
   customElements.define(ELEMENT_ID, WebComponent);
