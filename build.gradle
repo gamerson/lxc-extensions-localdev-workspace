@@ -5,16 +5,18 @@ createDockerContainer {
 	withEnvVar "KUBERNETES_SERVICE_HOST", "k3d-lxc-localdev-server-0"
 	withEnvVar "KUBERNETES_SERVICE_PORT", "6443"
 	withEnvVar "KUBERNETES_NAMESPACE", "default"
+
   new ByteArrayOutputStream().withStream { output ->
     exec {
-      commandLine "sh", "-c", "kubectl --context 'k3d-lxc-localdev' get secret --field-selector type=kubernetes.io/service-account-token -o jsonpath='{.items[0].data.ca\\.crt}' | base64 --decode"
+      commandLine "sh", "-c", "kubectl config view --raw -o json | jq -r '.clusters[] | select(.name == \"k3d-lxc-localdev\") | .cluster[\"certificate-authority-data\"]' | base64 --decode"
       standardOutput = output
     }
     withEnvVar "KUBERNETES_CERTIFICATE", output.toString()
   }
+
   new ByteArrayOutputStream().withStream { output ->
     exec {
-      commandLine "sh", "-c", "kubectl --context 'k3d-lxc-localdev' get secret --field-selector type=kubernetes.io/service-account-token -o jsonpath='{.items[0].data.token}' | base64 --decode"
+      commandLine "sh", "-c", "kubectl --context 'k3d-lxc-localdev' get secret default-token -o jsonpath='{.data.token}' | base64 --decode"
       standardOutput = output
     }
     withEnvVar "KUBERNETES_TOKEN", output.toString()
