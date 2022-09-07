@@ -2,7 +2,7 @@
 
 set -e
 
-HOST_ALIASES="['dxp']"
+HOST_ALIASES="['dxp', 'vi']"
 
 ytt -f ./k8s/k3d --data-value-yaml "hostAliases=$HOST_ALIASES" > .cluster_config.yaml
 
