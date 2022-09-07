@@ -39,7 +39,7 @@ RESULT=$(\
 		-s \
 		-v \
 		-X 'POST' \
-		"https://${DXP_HOST}/o/c/coupons/batch" \
+		"https://${DXP_HOST}/o/c/coupons/batch?createStrategy=UPSERT" \
 		-H 'accept: application/json' \
 		-H 'Content-Type: application/json' \
 		-H "Authorization: Bearer ${ACCESS_TOKEN}" \
@@ -73,3 +73,5 @@ until [ "${BATCH_STATUS}" == "COMPLETED" ] || [ "${BATCH_STATUS}" == "FAILED" ] 
 
 	BATCH_STATUS=$(jq -r '.executeStatus//.status' <<< "$RESULT")
 done
+
+echo "BATCH STATUS: ${BATCH_STATUS}"

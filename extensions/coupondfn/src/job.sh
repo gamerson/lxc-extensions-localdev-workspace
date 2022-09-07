@@ -74,6 +74,8 @@ until [ "${BATCH_STATUS}" == "COMPLETED"  ] || [ "${BATCH_STATUS}" == "FAILED"  
 	BATCH_STATUS=$(jq -r '.executeStatus//.status' <<< "$RESULT")
 done
 
+echo "BATCH STATUS: ${BATCH_STATUS}"
+
 if [ "${BATCH_STATUS}" == "COMPLETED" ]; then
 	RESULT=$(\
 		curl \
