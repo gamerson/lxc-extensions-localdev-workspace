@@ -1,7 +1,5 @@
 package com.liferay.couponpdf.service.config;
 
-import java.util.Arrays;
-import java.util.Collections;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,16 +11,10 @@ import org.springframework.security.oauth2.client.registration.ReactiveClientReg
 import org.springframework.security.oauth2.client.web.reactive.function.client.ServerOAuth2AuthorizedClientExchangeFilterFunction;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 public class OAuthClientConfiguration {
-
-  @Value("${com.liferay.lxc.dxp.mainDomain}")
-  private String _mainDomain;
 
   @Bean
   public ReactiveClientRegistrationRepository clientRegistrations(
@@ -45,11 +37,6 @@ public class OAuthClientConfiguration {
   }
 
   @Bean
-  public String mainDomain() {
-	  return _mainDomain;
-  }
-
-  @Bean
   public WebClient webClient(ReactiveClientRegistrationRepository clientRegistrations) {
     ServerOAuth2AuthorizedClientExchangeFilterFunction oauth =
         new ServerOAuth2AuthorizedClientExchangeFilterFunction(
@@ -60,17 +47,5 @@ public class OAuthClientConfiguration {
     oauth.setDefaultClientRegistrationId("dxp");
 
     return WebClient.builder().filter(oauth).build();
-  }
-
-  @Bean
-  public CorsConfigurationSource corsConfigurationSource() {
-    CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(Collections.singletonList("https://" + mainDomain()));
-    configuration.setAllowedMethods(
-        Arrays.asList("DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"));
-    configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", configuration);
-    return source;
   }
 }
