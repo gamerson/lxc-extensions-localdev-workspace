@@ -2,6 +2,7 @@
     "private": true,
     "workspaces": {
         "packages": [
+            "extensions/coupon-app",
             "extensions/city-search",
             "extensions/able-theme-css"
         ]

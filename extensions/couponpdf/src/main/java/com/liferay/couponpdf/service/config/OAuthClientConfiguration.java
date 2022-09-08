@@ -65,7 +65,8 @@ public class OAuthClientConfiguration {
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(Collections.singletonList("https://" + mainDomain()));
+    //configuration.setAllowedOrigins(Collections.singletonList("https://" + mainDomain()));
+    configuration.setAllowedOrigins(Collections.singletonList("*"));
     configuration.setAllowedMethods(
         Arrays.asList("DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"));
     configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));

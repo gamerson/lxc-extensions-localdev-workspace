@@ -20,7 +20,7 @@ k8s_resource(
 # Extensions
 
 def process_extension(
-    name, source_deps = [], objects = [], port_forwards = [], resource_deps = []):
+    name, source_deps = [], objects = [], port_forwards = [], resource_deps = [], links = []):
   custom_build(
     name,
     'extensions/%s/build.sh' % name,
@@ -37,7 +37,8 @@ def process_extension(
     port_forwards=port_forwards,
     objects=['%s-%s-lxc-ext-provision-metadata:configmap' % (name, virtual_instance_id)] + objects,
     resource_deps=resource_deps,
-    workload=name
+    workload=name,
+    links=links
   )
 
 # coupondfn
@@ -60,7 +61,9 @@ process_extension(
     'couponpdf:ingressroute'
   ],
   port_forwards=['8001'],
-  resource_deps=['coupondfn'])
+  resource_deps=['coupondfn'],
+  links=[link('https://couponpdf.localdev.me/coupons/print', 'Print a coupon')]
+)
 
 # uscities
 process_extension(
@@ -75,3 +78,7 @@ process_extension(
   port_forwards=['8002'])
 
 update_settings(max_parallel_updates=1)
+
+if config.tilt_subcommand == 'down':
+  local('kubectl delete cm -l lxc.liferay.com/metadataType=dxp')
+  local('kubectl delete cm -l lxc.liferay.com/metadataType=ext-init')

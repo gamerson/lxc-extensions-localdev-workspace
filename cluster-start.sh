@@ -14,12 +14,20 @@ k3d cluster create \
 kubectl config use-context k3d-lxc-localdev
 kubectl config set-context --current --namespace=default
 
+SA_STATUS="0"
+
+until [ "${SA_STATUS}" == "1" ]; do
+	SA_STATUS=$(kubectl get sa -o json | jq -r '.items | length')
+
+	echo "SA_STATUS: ${SA_STATUS}"
+done
+
+kubectl create -f ./k8s/k3d/token.yaml
+kubectl create -f ./k8s/k3d/rbac.yaml
+
 kubectl create secret generic localdev-tls-secret \
   --from-file=tls.crt=./k8s/tls/localdev.me.crt \
   --from-file=tls.key=./k8s/tls/localdev.me.key  \
   --namespace default
-
-kubectl create \
-  -f ./k8s/k3d/rbac.yaml
 
 echo "Cluster is ready.  Run 'tilt up' to deploy DXP and extensions"
