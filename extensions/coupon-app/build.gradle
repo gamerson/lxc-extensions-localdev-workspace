@@ -22,7 +22,6 @@ createClientExtensionConfig {
         clientExtensionConfig.text = clientExtensionConfig.text.replaceAll(url, it.value)
       }
     }
-    //clientExtensionConfig.text = clientExtensionConfig.text.replaceAll("\"default\"", "\"dxp.localdev.me\"")
   }
 }
 
