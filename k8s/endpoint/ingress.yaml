@@ -2,17 +2,17 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: dxp-proxy
+  name: #@ data.values.id
   labels:
-    app: dxp-proxy
+    app: #@ data.values.id
 spec:
   rules:
-  - host: dxp.localdev.me
+  - host: #@ "{}.localdev.me".format(data.values.id)
     http:
       paths:
       - backend:
           service:
-            name: dxp-proxy
+            name: #@ data.values.id
             port:
               number: 80
         path: /
@@ -22,7 +22,7 @@ spec:
       paths:
       - backend:
           service:
-            name: dxp-proxy
+            name: #@ data.values.id
             port:
               number: 80
         path: /

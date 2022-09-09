@@ -1,9 +1,10 @@
+#@ load("@ytt:data", "data")
 apiVersion: v1
 kind: Service
 metadata:
-  name: dxp-proxy
+  name: #@ data.values.id
   labels:
-    app: dxp-proxy
+    app: #@ data.values.id
 spec:
   ports:
   - port: 80

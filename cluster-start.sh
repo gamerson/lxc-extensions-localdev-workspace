@@ -4,6 +4,7 @@ set -e
 
 # Make sure that extensions can resolve host aliases
 
+declare -a host_aliases=("dxp" "vi")
 HOST_ALIASES="['dxp', 'vi']"
 
 ytt -f ./k8s/k3d --data-value-yaml "hostAliases=$HOST_ALIASES" > .cluster_config.yaml
@@ -57,9 +58,14 @@ done
 echo -e "\rINGRESSROUTE_CRD: ${CRD}"
 
 # setup the dxp endpoint to route requests to dxp instance running on docker host
-ytt \
-	-f k8s/dxp_endpoint \
-	--data-value "dockerHostAddress=${ADDRESS}" \
-	--data-value "virtualInstanceId=dxp.localdev.me" | kubectl apply -f-
+for hostAlias in ${host_aliases[@]}
+do
+  ytt \
+    -f k8s/endpoint \
+    --data-value "id=${hostAlias}" \
+    --data-value-yaml "dockerHostAddress=${ADDRESS}" \
+    --data-value "virtualInstanceId=dxp.localdev.me" | kubectl apply -f-
+done
+
 
 echo "Cluster is ready.  Run 'tilt up' to deploy DXP and extensions"
