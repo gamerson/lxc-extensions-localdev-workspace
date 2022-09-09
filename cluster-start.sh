@@ -30,4 +30,17 @@ kubectl create secret generic localdev-tls-secret \
   --from-file=tls.key=./k8s/tls/localdev.me.key  \
   --namespace default
 
+DOCKER_HOST_ADDRESS=""
+
+until [ "${DOCKER_HOST_ADDRESS}" != "" ]; do
+	DOCKER_HOST_ADDRESS=$(kubectl get cm coredns --namespace kube-system -o jsonpath='{.data.NodeHosts}' | grep host.k3d.internal | awk '{print $1}')
+
+	echo "DOCKER_HOST_ADDRESS: ${DOCKER_HOST_ADDRESS}"
+done
+
+ytt \
+	-f k8s/dxp_endpoint \
+	--data-value "dockerHostAddress=${DOCKER_HOST_ADDRESS}" \
+	--data-value "virtualInstanceId=dxp.localdev.me"
+
 echo "Cluster is ready.  Run 'tilt up' to deploy DXP and extensions"

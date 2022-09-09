@@ -1,21 +1,7 @@
 virtual_instance_id="dxp.localdev.me"
 
-watch_file('k8s/dxp_endpoint/')
 watch_file('k8s/extension/')
 watch_file('k8s/extension_job/')
-
-k8s_yaml(local(["k8s/dxp_endpoint/yaml.sh", virtual_instance_id]))
-
-k8s_resource(
-  labels=['dxp-proxy'],
-  objects=[
-    'dxp-proxy:endpoints',
-    'dxp-proxy:ingress',
-    'dxp-proxy:ingressroute',
-    'dxp-proxy:service'
-   ],
-   new_name='dxp-proxy'
-)
 
 # Extensions
 
