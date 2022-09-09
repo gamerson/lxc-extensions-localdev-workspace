@@ -7,8 +7,8 @@ buildscript {
   }
 }
 
-createClientExtensionConfig {
-  doLast {
+buildClientExtension {
+  doFirst {
     def clientExtension = new org.yaml.snakeyaml.Yaml().load(new FileInputStream(file("client-extension.yaml")))
     def manifest = new groovy.json.JsonSlurper().parse(file("$buildDir/asset-manifest.json"))
     def clientExtensionConfig = file("$buildDir/coupon-app.client-extension-config.json")
@@ -23,11 +23,4 @@ createClientExtensionConfig {
       }
     }
   }
-}
-
-buildClientExtension {
-	from('build/') {
-		include('static/**/*')
-		into('static')
-	}
 }
