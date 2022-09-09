@@ -1,9 +1,10 @@
 virtual_instance_id="dxp.localdev.me"
 
+update_settings(max_parallel_updates=1)
 watch_file('k8s/extension/')
 watch_file('k8s/extension_job/')
 
-# Extensions
+# Tilt methods
 
 def process_extension(
     name, source_deps = [], objects = [], port_forwards = [], resource_deps = [], links = []):
@@ -27,6 +28,12 @@ def process_extension(
     links=links
   )
 
+if config.tilt_subcommand == 'down':
+  local('kubectl delete cm -l lxc.liferay.com/metadataType=dxp')
+  local('kubectl delete cm -l lxc.liferay.com/metadataType=ext-init')
+
+# Declare extensions
+
 # coupondfn
 process_extension(
   name='coupondfn')
@@ -48,8 +55,7 @@ process_extension(
   ],
   port_forwards=['8001'],
   resource_deps=['coupondfn'],
-  links=[link('https://couponpdf.localdev.me/coupons/print', 'Print a coupon')]
-)
+  links=[link('https://couponpdf.localdev.me/coupons/print', 'Print a coupon')])
 
 # uscities
 process_extension(
@@ -62,9 +68,3 @@ process_extension(
     'uscities:ingressroute'
   ],
   port_forwards=['8002'])
-
-update_settings(max_parallel_updates=1)
-
-if config.tilt_subcommand == 'down':
-  local('kubectl delete cm -l lxc.liferay.com/metadataType=dxp')
-  local('kubectl delete cm -l lxc.liferay.com/metadataType=ext-init')
