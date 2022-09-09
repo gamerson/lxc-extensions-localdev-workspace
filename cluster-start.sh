@@ -2,9 +2,13 @@
 
 set -e
 
+# Make sure that extensions can resolve host aliases
+
 HOST_ALIASES="['dxp', 'vi']"
 
 ytt -f ./k8s/k3d --data-value-yaml "hostAliases=$HOST_ALIASES" > .cluster_config.yaml
+
+# create k3d cluster with local registry
 
 k3d cluster create \
   --config .cluster_config.yaml \
@@ -14,13 +18,15 @@ k3d cluster create \
 kubectl config use-context k3d-lxc-localdev
 kubectl config set-context --current --namespace=default
 
-SA_STATUS="0"
+# poll until default service account is created
 
-until [ "${SA_STATUS}" == "1" ]; do
-	SA_STATUS=$(kubectl get sa -o json | jq -r '.items | length')
+SA="0"
 
-	echo "SA_STATUS: ${SA_STATUS}"
+echo -n "SERVICEACOUNT_STATUS: waiting..."
+until [ "${SA}" == "1" ]; do
+	SA=$(kubectl get sa -o json | jq -r '.items | length')
 done
+echo -e "\rSERVICEACOUNT_STATUS: Available."
 
 kubectl create -f ./k8s/k3d/token.yaml
 kubectl create -f ./k8s/k3d/rbac.yaml
@@ -30,17 +36,30 @@ kubectl create secret generic localdev-tls-secret \
   --from-file=tls.key=./k8s/tls/localdev.me.key  \
   --namespace default
 
-DOCKER_HOST_ADDRESS=""
+# poll until coredns is updated with docker host address
 
-until [ "${DOCKER_HOST_ADDRESS}" != "" ]; do
-	DOCKER_HOST_ADDRESS=$(kubectl get cm coredns --namespace kube-system -o jsonpath='{.data.NodeHosts}' | grep host.k3d.internal | awk '{print $1}')
+ADDRESS=""
 
-	echo "DOCKER_HOST_ADDRESS: ${DOCKER_HOST_ADDRESS}"
+echo -n "DOCKER_HOST_ADDRESS: waiting..."
+until [ "${ADDRESS}" != "" ]; do
+	ADDRESS=$(kubectl get cm coredns --namespace kube-system -o jsonpath='{.data.NodeHosts}' | grep host.k3d.internal | awk '{print $1}')
 done
+echo -e "\rDOCKER_HOST_ADDRESS: ${ADDRESS}"
 
+# poll until the ingressroute CRD has been installed by traefik controller
+
+CRD=""
+
+echo -n "INGRESSROUTE_CRD: waiting..."
+until [ "$CRD" != "" ]; do
+  CRD=$(kubectl get crd ingressroutes.traefik.containo.us --ignore-not-found)
+done
+echo -e "\rINGRESSROUTE_CRD: ${CRD}"
+
+# setup the dxp endpoint to route requests to dxp instance running on docker host
 ytt \
 	-f k8s/dxp_endpoint \
-	--data-value "dockerHostAddress=${DOCKER_HOST_ADDRESS}" \
-	--data-value "virtualInstanceId=dxp.localdev.me"
+	--data-value "dockerHostAddress=${ADDRESS}" \
+	--data-value "virtualInstanceId=dxp.localdev.me" | kubectl apply -f-
 
 echo "Cluster is ready.  Run 'tilt up' to deploy DXP and extensions"
