@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-k3d cluster delete lxc-localdev
+set -e
 
-docker network rm k3d-lxc-localdev
+k3d cluster delete lxc-localdev

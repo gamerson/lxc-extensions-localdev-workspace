@@ -2,22 +2,22 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: dxp-proxy
+  name: #@ data.values.id
   labels:
-    app: dxp-proxy
+    app: #@ data.values.id
 spec:
   entryPoints:
     - websecure
   routes:
   - kind: Rule
-    match: dxp.localdev.me
+    match: #@ "{}.localdev.me".format(data.values.id)
     services:
-    - name: dxp-proxy
+    - name: #@ data.values.id
       port: 80
   - kind: Rule
     match: #@ data.values.virtualInstanceId
     services:
-    - name: dxp-proxy
+    - name: #@ data.values.id
       port: 80
   tls:
-    secretName: localdev-tls-secret
+    secretName: #@ data.values.tlsSecretName
