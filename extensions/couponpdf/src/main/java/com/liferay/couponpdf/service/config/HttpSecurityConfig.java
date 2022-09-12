@@ -1,7 +1,10 @@
 package com.liferay.couponpdf.service.config;
 
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,30 +17,53 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 public class HttpSecurityConfig extends WebSecurityConfigurerAdapter {
 
-  @Value("${com.liferay.lxc.dxp.mainDomain}")
-  private String _mainDomain;
+	@Value("${com.liferay.lxc.dxp.mainDomain}")
+	private String _mainDomain;
 
-  @Bean
-  public String mainDomain() {
-	  return _mainDomain;
-  }
+	@Bean
+	public String mainDomain() {
+		return _mainDomain;
+	}
 
-  @Override
-  protected void configure(HttpSecurity httpSecurity) throws Exception {
-    httpSecurity.cors();
-    httpSecurity.csrf().disable().authorizeRequests().antMatchers("/").permitAll();
-  }
+	@Value("${com.liferay.lxc.dxp.domains}")
+	private String _lxcDXPDomains;
 
-  @Bean
-  public CorsConfigurationSource corsConfigurationSource() {
-    CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(Collections.singletonList("https://" + mainDomain()));
-    configuration.setAllowedMethods(
-        Arrays.asList("DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"));
-    configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", configuration);
-    return source;
-  }
+	@Bean
+	public List<String> allowedOrigins() {
+		return Stream.of(
+			_lxcDXPDomains.split("\\s*\n\\s*")
+		).map(
+			String::trim
+		).map(
+			"https://"::concat
+		).collect(
+			Collectors.toList()
+		);
+	}
+
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowedOrigins(allowedOrigins());
+		configuration.setAllowedMethods(
+			Arrays.asList("DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"));
+		configuration.setAllowedHeaders(
+			Arrays.asList("Authorization", "Content-Type"));
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
+	}
+
+	@Override
+	protected void configure(HttpSecurity httpSecurity) throws Exception {
+		httpSecurity.cors(
+		).and(
+		).csrf(
+		).disable(
+		).authorizeRequests(
+		).antMatchers(
+			"/"
+		).permitAll();
+	}
 
 }
