@@ -1,0 +1,244 @@
+{
+    "actions": {
+      "create": {
+        "method": "POST",
+        "href": "https://dxp.localdev.me/o/object-admin/v1.0/object-definitions"
+      }
+    },
+    "facets": [],
+    "items": [
+      {
+        "accountEntryRestricted": false,
+        "accountEntryRestrictedObjectFieldId": 0,
+        "actions": {
+          "permissions": {
+            "method": "PATCH",
+            "href": "https://dxp.localdev.me/o/object-admin/v1.0/object-definitions/43419"
+          },
+          "get": {
+            "method": "GET",
+            "href": "https://dxp.localdev.me/o/object-admin/v1.0/object-definitions/43419"
+          },
+          "update": {
+            "method": "PUT",
+            "href": "https://dxp.localdev.me/o/object-admin/v1.0/object-definitions/43419"
+          },
+          "delete": {
+            "method": "DELETE",
+            "href": "https://dxp.localdev.me/o/object-admin/v1.0/object-definitions/43419"
+          }
+        },
+        "active": true,
+        "dateCreated": "2022-09-12T15:44:30Z",
+        "dateModified": "2022-09-12T15:44:32Z",
+        "id": 43419,
+        "label": {
+          "en_US": "Coupon"
+        },
+        "name": "Coupon",
+        "objectActions": [],
+        "objectFields": [
+          {
+            "DBType": "String",
+            "businessType": "Text",
+            "defaultValue": "",
+            "externalReferenceCode": "ec0851ee-6dbe-ce66-8aa7-c16ffa00cc7d",
+            "id": 43433,
+            "indexed": true,
+            "indexedAsKeyword": false,
+            "indexedLanguageId": "en_US",
+            "label": {
+              "en_US": "Code"
+            },
+            "listTypeDefinitionId": 0,
+            "name": "code",
+            "objectFieldSettings": [],
+            "required": true,
+            "state": false,
+            "system": false,
+            "type": "String"
+          },
+          {
+            "DBType": "Date",
+            "businessType": "Date",
+            "defaultValue": "",
+            "externalReferenceCode": "81783ab3-c770-8ee1-074d-18bbe37189ea",
+            "id": 43423,
+            "indexed": false,
+            "indexedAsKeyword": false,
+            "indexedLanguageId": "",
+            "label": {
+              "en_US": "Create Date"
+            },
+            "listTypeDefinitionId": 0,
+            "name": "createDate",
+            "objectFieldSettings": [],
+            "required": false,
+            "state": false,
+            "system": true,
+            "type": "Date"
+          },
+          {
+            "DBType": "String",
+            "businessType": "Text",
+            "defaultValue": "",
+            "externalReferenceCode": "24546184-ce35-b3c1-cc00-76ad07da0212",
+            "id": 43421,
+            "indexed": false,
+            "indexedAsKeyword": false,
+            "indexedLanguageId": "",
+            "label": {
+              "en_US": "Author"
+            },
+            "listTypeDefinitionId": 0,
+            "name": "creator",
+            "objectFieldSettings": [],
+            "required": false,
+            "state": false,
+            "system": true,
+            "type": "String"
+          },
+          {
+            "DBType": "String",
+            "businessType": "Text",
+            "defaultValue": "",
+            "externalReferenceCode": "54f264bb-32e1-ec63-82b3-bb94a266645c",
+            "id": 43425,
+            "indexed": false,
+            "indexedAsKeyword": false,
+            "indexedLanguageId": "",
+            "label": {
+              "en_US": "External Reference Code"
+            },
+            "listTypeDefinitionId": 0,
+            "name": "externalReferenceCode",
+            "objectFieldSettings": [],
+            "required": false,
+            "state": false,
+            "system": true,
+            "type": "String"
+          },
+          {
+            "DBType": "Long",
+            "businessType": "LongInteger",
+            "defaultValue": "",
+            "externalReferenceCode": "814463ea-76e2-6115-0e5d-30a71feefe7f",
+            "id": 43427,
+            "indexed": false,
+            "indexedAsKeyword": false,
+            "indexedLanguageId": "",
+            "label": {
+              "en_US": "ID"
+            },
+            "listTypeDefinitionId": 0,
+            "name": "id",
+            "objectFieldSettings": [],
+            "required": false,
+            "state": false,
+            "system": true,
+            "type": "Long"
+          },
+          {
+            "DBType": "Date",
+            "businessType": "Date",
+            "defaultValue": "",
+            "externalReferenceCode": "b40aacc0-8c38-86c8-91c8-d73f2e021c5b",
+            "id": 43438,
+            "indexed": true,
+            "indexedAsKeyword": false,
+            "indexedLanguageId": "",
+            "label": {
+              "en_US": "Issue Date"
+            },
+            "listTypeDefinitionId": 0,
+            "name": "issueDate",
+            "objectFieldSettings": [],
+            "required": false,
+            "state": false,
+            "system": false,
+            "type": "Date"
+          },
+          {
+            "DBType": "Boolean",
+            "businessType": "Boolean",
+            "defaultValue": "",
+            "externalReferenceCode": "2babaa69-60e5-1dfa-6464-492fbf1d22c5",
+            "id": 43440,
+            "indexed": true,
+            "indexedAsKeyword": false,
+            "indexedLanguageId": "",
+            "label": {
+              "en_US": "Issued"
+            },
+            "listTypeDefinitionId": 0,
+            "name": "issued",
+            "objectFieldSettings": [],
+            "required": false,
+            "state": false,
+            "system": false,
+            "type": "Boolean"
+          },
+          {
+            "DBType": "Date",
+            "businessType": "Date",
+            "defaultValue": "",
+            "externalReferenceCode": "02e83c86-3dd4-1029-e2bb-63b7dd17ada4",
+            "id": 43429,
+            "indexed": false,
+            "indexedAsKeyword": false,
+            "indexedLanguageId": "",
+            "label": {
+              "en_US": "Modified Date"
+            },
+            "listTypeDefinitionId": 0,
+            "name": "modifiedDate",
+            "objectFieldSettings": [],
+            "required": false,
+            "state": false,
+            "system": true,
+            "type": "Date"
+          },
+          {
+            "DBType": "String",
+            "businessType": "Text",
+            "defaultValue": "",
+            "externalReferenceCode": "9e308b78-a009-0c96-ee02-1f6d0643076e",
+            "id": 43431,
+            "indexed": false,
+            "indexedAsKeyword": false,
+            "indexedLanguageId": "",
+            "label": {
+              "en_US": "Status"
+            },
+            "listTypeDefinitionId": 0,
+            "name": "status",
+            "objectFieldSettings": [],
+            "required": false,
+            "state": false,
+            "system": true,
+            "type": "String"
+          }
+        ],
+        "objectLayouts": [],
+        "objectViews": [],
+        "panelCategoryKey": "applications_menu.applications.content",
+        "parameterRequired": false,
+        "pluralLabel": {
+          "en_US": "Coupons"
+        },
+        "portlet": false,
+        "scope": "company",
+        "status": {
+          "code": 0,
+          "label": "approved",
+          "label_i18n": "Approved"
+        },
+        "system": false,
+        "titleObjectFieldId": 0
+      }
+    ],
+    "lastPage": 1,
+    "page": 1,
+    "pageSize": 20,
+    "totalCount": 1
+  }
