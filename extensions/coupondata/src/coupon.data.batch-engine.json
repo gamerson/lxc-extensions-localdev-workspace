@@ -1,0 +1,93 @@
+{
+  "actions": {
+    "create": {
+      "method": "POST",
+      "href": "https://dxp.localdev.me/o/c/coupons/"
+    }
+  },
+  "facets": [],
+  "items": [
+    {
+      "actions": {
+        "permissions": {
+          "method": "PATCH",
+          "href": "https://dxp.localdev.me/o/c/coupons/43456"
+        },
+        "get": {
+          "method": "GET",
+          "href": "https://dxp.localdev.me/o/c/coupons/43456"
+        },
+        "update": {
+          "method": "PUT",
+          "href": "https://dxp.localdev.me/o/c/coupons/43456"
+        },
+        "delete": {
+          "method": "DELETE",
+          "href": "https://dxp.localdev.me/o/c/coupons/43456"
+        }
+      },
+      "creator": {
+        "additionalName": "",
+        "contentType": "UserAccount",
+        "familyName": "Test",
+        "givenName": "Test",
+        "id": 20125,
+        "name": "Test Test"
+      },
+      "dateCreated": "2022-09-12T15:44:36Z",
+      "dateModified": "2022-09-12T15:58:54Z",
+      "externalReferenceCode": "43456",
+      "id": 43456,
+      "status": {
+        "code": 0,
+        "label": "approved",
+        "label_i18n": "Approved"
+      },
+      "code": "one",
+      "issued": true
+    },
+    {
+      "actions": {
+        "permissions": {
+          "method": "PATCH",
+          "href": "https://dxp.localdev.me/o/c/coupons/43458"
+        },
+        "get": {
+          "method": "GET",
+          "href": "https://dxp.localdev.me/o/c/coupons/43458"
+        },
+        "update": {
+          "method": "PUT",
+          "href": "https://dxp.localdev.me/o/c/coupons/43458"
+        },
+        "delete": {
+          "method": "DELETE",
+          "href": "https://dxp.localdev.me/o/c/coupons/43458"
+        }
+      },
+      "creator": {
+        "additionalName": "",
+        "contentType": "UserAccount",
+        "familyName": "Test",
+        "givenName": "Test",
+        "id": 20125,
+        "name": "Test Test"
+      },
+      "dateCreated": "2022-09-12T15:44:36Z",
+      "dateModified": "2022-09-12T15:44:36Z",
+      "externalReferenceCode": "43458",
+      "id": 43458,
+      "status": {
+        "code": 0,
+        "label": "approved",
+        "label_i18n": "Approved"
+      },
+      "code": "two",
+      "issued": false
+    }
+  ],
+  "lastPage": 1,
+  "page": 1,
+  "pageSize": 20,
+  "totalCount": 2
+}
