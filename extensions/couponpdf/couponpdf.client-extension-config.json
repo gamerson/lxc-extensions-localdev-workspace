@@ -6,5 +6,17 @@
       "C_Coupon.everything"
     ],
     "userAccountEmailAddress": "test@$[conf:dxp.lxc.liferay.com.virtualInstanceId]"
+  },
+  "com.liferay.oauth2.provider.configuration.OAuth2ProviderApplicationUserAgentConfiguration~coupon.user.agent.application": {
+    "description": "Coupon User Agent Application",
+    "homePageURL": "https://$[conf:ext.lxc.liferay.com.mainDomain]",
+    "scopes": [
+      "C_Coupon.everything"
+    ]
+  },
+  "com.liferay.object.configuration.ObjectActionExecutorFactoryConfiguration~coupon-issued-action": {
+    "description": "Coupon Issued Action",
+    "resourcePath": "/coupons/issued",
+    "oauth2Application": "coupon.user.agent.application"
   }
 }
