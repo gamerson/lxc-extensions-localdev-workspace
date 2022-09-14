@@ -1,0 +1,6 @@
+COPY ca.crt /opt/liferay
+
+RUN \
+	cd /opt/liferay \
+	&& keytool -keystore cacerts -storepass changeit \
+		-noprompt -trustcacerts -importcert -alias project-cert -file ca.crt
