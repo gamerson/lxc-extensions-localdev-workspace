@@ -18,10 +18,10 @@ public class OAuthClientConfiguration {
 
   @Bean
   public ReactiveClientRegistrationRepository clientRegistrations(
-      @Value("${couponpdf.oauth2.token.uri}") String tokenUri,
-      @Value("${couponpdf.oauth2.headless.server.client.id}") String clientId,
-      @Value("${couponpdf.oauth2.headless.server.client.secret}") String clientSecret,
-      @Value("${couponpdf.oauth2.headless.server.scopes}") String scope) {
+      @Value("${coupon.headless.server.application.oauth2.token.uri}") String tokenUri,
+      @Value("${coupon.headless.server.application.oauth2.headless.server.client.id}") String clientId,
+      @Value("${coupon.headless.server.application.oauth2.headless.server.client.secret}") String clientSecret,
+      @Value("${coupon.headless.server.application.oauth2.headless.server.scopes}") String scope) {
 
     ClientRegistration registration =
         ClientRegistration.withRegistrationId("dxp")
