@@ -1,6 +1,6 @@
 coupon-app:
   cssURLs:
-    - main.css
+    - static/css/main.*.css
   friendlyURLMapping: coupon-app
   htmlElementName: coupon-app
   instanceable: false
@@ -8,5 +8,5 @@ coupon-app:
   portletCategoryName: category.remote-apps
   type: customElement
   urls:
-    - main.js
+    - static/js/main.*.js
   useESM: false
