@@ -1,23 +1,10 @@
-task copyCA(type: Copy) {
-  from('k8s/tls/ca.crt')
-  into('build/docker')
-}
-
-gradle.projectsEvaluated {
-  project.subprojects.findAll { sub -> sub.tasks.findByName('buildClientExtension') != null }.each { sub ->
-      createDockerContainer.hostConfig.extraHosts.add(sub.name + ".localdev.me:172.150.0.1")
-  }
-}
-
-buildDockerImage.dependsOn copyCA
-
 createDockerContainer {
   hostConfig.binds.putAll(["liferayData":"/opt/liferay/data:rw"])
-  hostConfig.extraHosts.add("couponpdf.localdev.me:172.150.0.1")
-  hostConfig.network = "k3d-lxc-localdev"
+  //hostConfig.network = "k3d-lxc-localdev"
+  hostConfig.network = "host"
 
-	withEnvVar "KUBERNETES_SERVICE_HOST", "k3d-lxc-localdev-server-0"
-	withEnvVar "KUBERNETES_SERVICE_PORT", "6443"
+	withEnvVar "KUBERNETES_SERVICE_HOST", "localhost"
+	withEnvVar "KUBERNETES_SERVICE_PORT", "6550"
 	withEnvVar "KUBERNETES_NAMESPACE", "default"
 
   new ByteArrayOutputStream().withStream { output ->
