@@ -1,10 +1,10 @@
 createDockerContainer {
   hostConfig.binds.putAll(["liferayData":"/opt/liferay/data:rw"])
-  //hostConfig.network = "k3d-lxc-localdev"
-  hostConfig.network = "host"
+  hostConfig.extraHosts.add("couponpdf.localdev.me:172.150.0.1")
+  hostConfig.network = "k3d-lxc-localdev"
 
-	withEnvVar "KUBERNETES_SERVICE_HOST", "localhost"
-	withEnvVar "KUBERNETES_SERVICE_PORT", "6550"
+	withEnvVar "KUBERNETES_SERVICE_HOST", "k3d-lxc-localdev-server-0"
+	withEnvVar "KUBERNETES_SERVICE_PORT", "6443"
 	withEnvVar "KUBERNETES_NAMESPACE", "default"
 
   new ByteArrayOutputStream().withStream { output ->

@@ -12,7 +12,6 @@ ytt -f ./k8s/k3d --data-value-yaml "hostAliases=$HOST_ALIASES" > .cluster_config
 # create k3d cluster with local registry
 
 k3d cluster create \
-  --api-port 6550 \
   --config .cluster_config.yaml \
   --registry-create registry.localdev.me:5000 \
   --wait
