@@ -1,0 +1,24 @@
+{
+	"kind": "Deployment",
+	"id": "couponfunction",
+	"image": "couponfunction",
+	"cpu": 0.2,
+	"scale": 1,
+	"memory": 300,
+	"dependencies": ["coupondfn"],
+	"loadBalancer": {
+		"cdn": true,
+		"targetPort": 8081
+	},
+	"environments": {
+		"dev": {
+			"loadBalancer": {
+				"cdn": false,
+				"targetPort": 8081
+			}
+		},
+		"infra": {
+			"deploy": false
+		}
+	}
+}
