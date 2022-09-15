@@ -1,6 +1,9 @@
-COPY ca.crt /opt/liferay
-
+USER root
+COPY configs/lxc/ca.crt /usr/lib/jvm/zulu11/lib/security
 RUN \
-	cd /opt/liferay \
-	&& keytool -keystore cacerts -storepass changeit \
-		-noprompt -trustcacerts -importcert -alias project-cert -file ca.crt
+	keytool -noprompt -trustcacerts -importcert \
+		-alias project-cert \
+		-storepass changeit \
+		-cacerts \
+		-file /usr/lib/jvm/zulu11/lib/security/ca.crt
+USER liferay:liferay
