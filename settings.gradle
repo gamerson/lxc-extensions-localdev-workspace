@@ -4,6 +4,7 @@ buildscript {
 		classpath(group: "com.liferay", name: "com.liferay.gradle.plugins.workspace", version: "4.0.999") {
 			exclude group: "biz.aQute.bnd", module: "biz.aQute.bnd"
 		}
+    classpath group: "org.springframework.boot", name: "spring-boot-gradle-plugin", version: "2.7.3"
 	}
 
 	repositories {
@@ -25,3 +26,5 @@ apply plugin: "com.liferay.workspace"
 gradle.liferayWorkspace {
 	dockerImageId = startParameter.projectProperties.get("docker.image.id") ?: "lxc-extensions-localdev-dxp"
 }
+
+include 'extensions:coupon-function'
