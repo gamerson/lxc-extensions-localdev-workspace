@@ -1,0 +1,10 @@
+{
+  "com.liferay.oauth2.provider.configuration.OAuth2ProviderApplicationHeadlessServerConfiguration~couponpdf": {
+    "description": "Couponpdf headless server",
+    "homePageURL": "https://$[conf:ext.lxc.liferay.com.mainDomain]",
+    "scopes": [
+      "C_Coupon.everything"
+    ],
+    "userAccountEmailAddress": "test@$[conf:dxp.lxc.liferay.com.virtualInstanceId]"
+  }
+}
