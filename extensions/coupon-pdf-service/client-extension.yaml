@@ -1,0 +1,7 @@
+coupon-pdf-headless-server:
+  description: Coupon PDF headless service
+  homePageURL: https://$[conf:ext.lxc.liferay.com.mainDomain]
+  scopes:
+    - C_Coupon.everything
+  type: oauthApplicationHeadlessServer
+  userAccountEmailAddress: test@$[conf:dxp.lxc.liferay.com.virtualInstanceId]

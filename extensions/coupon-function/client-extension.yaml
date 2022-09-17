@@ -1,0 +1,11 @@
+coupon-action-user-agent:
+  type: oauthApplicationUserAgent
+  description: Coupon Action User Agent Application
+  scopes:
+    - C_Coupon.everything
+
+coupon-issued-action:
+  type: objectAction
+  description: Coupon Issued Action
+  resourcePath: /coupons/issued
+  oauthApplication: coupon-action-user-agent

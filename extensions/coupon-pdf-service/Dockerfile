@@ -7,7 +7,7 @@ ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
 
 RUN chmod +x /tini
 
-COPY build/lib/*.jar app.jar
+COPY *.jar app.jar
 COPY ca.crt $JAVA_HOME/lib/security
 
 RUN \

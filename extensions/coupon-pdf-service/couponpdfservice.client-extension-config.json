@@ -1,5 +1,5 @@
 {
-  "com.liferay.oauth2.provider.configuration.OAuth2ProviderApplicationHeadlessServerConfiguration~couponpdfservice": {
+  "com.liferay.oauth2.provider.configuration.OAuth2ProviderApplicationHeadlessServerConfiguration~coupon-pdf-service": {
     "description": "Couponpdf headless server",
     "homePageURL": "https://$[conf:ext.lxc.liferay.com.mainDomain]",
     "scopes": [

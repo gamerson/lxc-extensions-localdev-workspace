@@ -1,7 +1,7 @@
 {
 	"kind": "Deployment",
-	"id": "couponfunction",
-	"image": "couponfunction",
+	"id": "couponpdfservice",
+	"image": "couponpdfservice",
 	"cpu": 0.2,
 	"scale": 1,
 	"memory": 300,

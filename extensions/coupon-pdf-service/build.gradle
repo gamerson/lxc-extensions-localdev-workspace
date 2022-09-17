@@ -1,3 +1,6 @@
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+import com.bmuschko.gradle.docker.tasks.image.Dockerfile
+
 buildscript {
   dependencies {
     classpath group: "org.springframework.boot", name: "spring-boot-gradle-plugin", version: "2.7.3"
@@ -23,4 +26,25 @@ repositories {
   maven {
 		url "https://repository-cdn.liferay.com/nexus/content/groups/public"
 	} 
+}
+
+task dockerfileDeps(type: Copy) {
+  from bootJar
+  from "${rootProject.projectDir}/k8s/tls/ca.crt"
+  into "$buildDir/docker"
+}
+
+task createClientExtensionDockerFile(type: Dockerfile) {
+  instructionsFromTemplate(file("Dockerfile"))
+}
+
+task buildClientExtensionDockerImage(type: DockerBuildImage) {
+  dependsOn createClientExtensionDockerFile, dockerfileDeps
+  if (project.hasProperty('imageId')) {
+    println "found property"
+    images = [project.properties["imageId"]]
+  }
+  else {
+   images = ["coupon-pdf-service"]
+  }
 }
