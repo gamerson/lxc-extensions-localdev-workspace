@@ -26,7 +26,7 @@ createDockerContainer {
 
 gradle.projectsEvaluated {
   buildDockerImage.dependsOn = buildDockerImage.dependsOn.findAll { !it.path.startsWith(":extensions") }
-  project.subprojects.findAll { sub -> sub.tasks.findByName('buildClientExtension') != null }.each { sub ->
+  project.subprojects.findAll { sub -> sub.tasks.findByName('buildClientExtensionDockerImage') != null }.each { sub ->
       createDockerContainer.hostConfig.extraHosts.add(sub.name + ".localdev.me:172.150.0.1")
   }
 }

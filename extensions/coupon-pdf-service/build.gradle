@@ -41,7 +41,6 @@ task createClientExtensionDockerFile(type: Dockerfile) {
 task buildClientExtensionDockerImage(type: DockerBuildImage) {
   dependsOn createClientExtensionDockerFile, dockerfileDeps
   if (project.hasProperty('imageId')) {
-    println "found property"
     images = [project.properties["imageId"]]
   }
   else {

@@ -1,0 +1,8 @@
+#@data/values
+---
+cpu: 500m
+image: coupon-action-springboot
+memory: 512Mi
+serviceId: coupon-action-springboot
+debugPort: 8001
+initMetadata: true
