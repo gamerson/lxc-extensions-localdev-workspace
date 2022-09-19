@@ -29,7 +29,6 @@ def process_extension(
   )
 
 if config.tilt_subcommand == 'down':
-  local('kubectl delete cm -l lxc.liferay.com/metadataType=dxp')
   local('kubectl delete cm -l lxc.liferay.com/metadataType=ext-init')
 
 # Declare extensions
