@@ -8,4 +8,4 @@ coupon-action-springboot:
   type: objectAction
   description: Coupon Issued Action
   resourcePath: /coupons/issued
-  oauthApplication: coupon-action-user-agent
+  oauth2Application: coupon-action-user-agent

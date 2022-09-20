@@ -1,0 +1,13 @@
+load('/repo/tilt/Tiltfile_functions', 'process_extension')
+
+process_extension(
+  'coupon-action-springboot', 
+  'extensions/coupon-action-springboot',
+  'dxp.localdev.me',
+  objects=[
+    'coupon-action-springboot:ingress',
+    'coupon-action-springboot:ingressroute'
+  ],
+  port_forwards=['8001'],
+  resource_deps=[],
+  links=[link('https://couponpdf.localdev.me/coupons/print', 'Print a coupon')])

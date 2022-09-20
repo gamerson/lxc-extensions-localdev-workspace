@@ -10,6 +10,7 @@ docker \
   -v /Users/greg/.liferay/:/root/.liferay/ \
   --expose 10350 \
   -p 10350:10350 \
+  -e DO_NOT_TRACK="1" \
   lxc-localdev \
   tilt \
   $@

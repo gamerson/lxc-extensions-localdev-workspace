@@ -30,9 +30,3 @@ gradle.projectsEvaluated {
       createDockerContainer.hostConfig.extraHosts.add(sub.name + ".localdev.me:172.150.0.1")
   }
 }
-
-logsDockerContainer.dependsOn startDockerContainer
-
-task runDockerContainer {
-	dependsOn logsDockerContainer
-}
