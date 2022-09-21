@@ -15,4 +15,4 @@ RUN \
 	&& keytool -keystore cacerts -storepass changeit \
 		-noprompt -trustcacerts -importcert -alias project-cert -file ca.crt
 
-ENTRYPOINT /tini -- java -agentlib:jdwp=transport=dt_socket,address=*:${DEBUG_PORT:-8001},server=y,suspend=n -jar /app.jar
+ENTRYPOINT /tini -- java -Xmx256m -agentlib:jdwp=transport=dt_socket,address=*:${DEBUG_PORT:-8002},server=y,suspend=n -jar /app.jar
