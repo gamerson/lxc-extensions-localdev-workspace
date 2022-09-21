@@ -1,4 +1,4 @@
-package com.liferay.couponpdf.service;
+package com.liferay.object.action;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -13,7 +13,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @Configuration
 @EnableScheduling
 @SpringBootApplication
-public class CouponPdfServiceApp {
+public class CouponActionApp {
 
   public static void main(String[] args) {
     System.getenv().entrySet().stream()
@@ -41,7 +41,7 @@ public class CouponPdfServiceApp {
     Path initMetadataPath = Paths.get("/etc/liferay/lxc/ext-init-metadata");
     
     try {
-		Files.list(initMetadataPath).filter(p -> p.getFileName().toString().startsWith("couponpdf")).forEach(path -> {
+		Files.list(initMetadataPath).filter(p -> p.getFileName().toString().startsWith("coupon-action")).forEach(path -> {
 			System.out.println(path + " -> ");
 			try {
 				System.out.println(Files.readString(path));
@@ -54,7 +54,6 @@ public class CouponPdfServiceApp {
 		// TODO Auto-generated catch block
 		e1.printStackTrace();
 	}
-
-    SpringApplication.run(CouponPdfServiceApp.class, args);
+    SpringApplication.run(CouponActionApp.class, args);
   }
 }

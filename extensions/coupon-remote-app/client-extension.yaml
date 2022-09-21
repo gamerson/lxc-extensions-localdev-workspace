@@ -1,10 +1,10 @@
-coupon-app:
+coupon-remote-app:
   cssURLs:
     - static/css/main.*.css
-  friendlyURLMapping: coupon-app
-  htmlElementName: coupon-app
+  friendlyURLMapping: coupon-remote-app
+  htmlElementName: coupon-remote-app
   instanceable: false
-  name: Coupon App
+  name: Coupon Remote App
   portletCategoryName: category.remote-apps
   type: customElement
   urls:

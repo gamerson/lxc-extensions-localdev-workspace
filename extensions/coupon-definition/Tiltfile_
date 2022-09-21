@@ -1,0 +1,7 @@
+load('/repo/tilt/Tiltfile_functions', 'process_extension')
+
+process_extension(
+  'coupon-definition', 
+  'extensions/coupon-definition',
+  'extension_job',
+  'dxp.localdev.me')

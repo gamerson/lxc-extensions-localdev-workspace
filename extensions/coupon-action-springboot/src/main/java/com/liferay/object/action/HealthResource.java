@@ -1,4 +1,4 @@
-package com.liferay.couponpdf.service;
+package com.liferay.object.action;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

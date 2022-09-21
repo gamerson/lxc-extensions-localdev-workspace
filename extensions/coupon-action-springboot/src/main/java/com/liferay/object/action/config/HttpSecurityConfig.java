@@ -1,4 +1,4 @@
-package com.liferay.couponpdf.service.config;
+package com.liferay.object.action.config;
 
 import java.util.Arrays;
 import java.util.List;

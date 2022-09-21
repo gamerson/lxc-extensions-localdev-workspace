@@ -1,3 +1,6 @@
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+import com.bmuschko.gradle.docker.tasks.image.Dockerfile
+
 createDockerContainer {
   hostConfig.binds.putAll(["liferayData":"/opt/liferay/data:rw"])
   hostConfig.extraHosts.add("couponpdf.localdev.me:172.150.0.1")

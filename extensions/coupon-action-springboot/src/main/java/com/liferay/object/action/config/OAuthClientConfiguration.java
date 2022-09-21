@@ -1,4 +1,4 @@
-package com.liferay.couponpdf.service.config;
+package com.liferay.object.action.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -18,17 +18,18 @@ public class OAuthClientConfiguration {
 
   @Bean
   public ReactiveClientRegistrationRepository clientRegistrations(
-      @Value("${couponpdf.oauth2.token.uri}") String tokenUri,
-      @Value("${couponpdf.oauth2.headless.server.client.id}") String clientId,
-      @Value("${couponpdf.oauth2.headless.server.client.secret}") String clientSecret,
-      @Value("${couponpdf.oauth2.headless.server.scopes}") String scope) {
+      @Value("${coupon-action-user-agent.oauth2.authorization.uri}") String authorizationUri,
+      @Value("${coupon-action-user-agent.oauth2.redirect.uris}") String redirectUris,
+      @Value("${coupon-action-user-agent.oauth2.introspection.uri}") String introspectionUri,
+      @Value("${coupon-action-user-agent.oauth2.user.agent.client.id}") String clientId,
+      @Value("${coupon-action-user-agent.oauth2.token.uri}") String tokenUri,
+      @Value("${coupon-action-user-agent.oauth2.user.agent.scopes}") String scopes) {
 
     ClientRegistration registration =
         ClientRegistration.withRegistrationId("dxp")
             .tokenUri(tokenUri)
             .clientId(clientId)
-            .clientSecret(clientSecret)
-            .scope(scope)
+            .scope(scopes)
             .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
             .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
             .build();

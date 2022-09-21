@@ -1,0 +1,7 @@
+#@data/values
+---
+cpu: 200m
+image: coupon-definition
+memory: 300Mi
+serviceId: coupon-definition
+initMetadata: true

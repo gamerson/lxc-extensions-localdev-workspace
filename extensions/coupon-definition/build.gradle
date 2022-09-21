@@ -1,0 +1,29 @@
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+import com.bmuschko.gradle.docker.tasks.image.Dockerfile
+
+task dockerfileDeps(type: Copy) {
+  dependsOn buildClientExtension
+  from zipTree(buildClientExtension.archivePath) 
+  into "$buildDir/docker"
+}
+
+task createClientExtensionDockerFile(type: Dockerfile) {
+  instructionsFromTemplate(file("Dockerfile"))
+}
+
+task buildClientExtensionDockerImage(type: DockerBuildImage) {
+  dependsOn createClientExtensionDockerFile, dockerfileDeps
+  if (project.hasProperty('imageId')) {
+    images = [project.properties["imageId"]]
+  }
+  else {
+   images = [project.name]
+  }
+}
+
+buildClientExtension {
+  from("src") {
+    include "**"
+  }
+  from "${rootProject.projectDir}/k8s/tls/ca.crt"
+}
