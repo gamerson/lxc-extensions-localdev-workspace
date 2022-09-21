@@ -3,13 +3,14 @@ import com.bmuschko.gradle.docker.tasks.image.Dockerfile
 
 task dockerfileDeps(type: Copy) {
   dependsOn buildClientExtension
-  from zipTree(buildClientExtension.archivePath) 
+  from zipTree(buildClientExtension.archivePath)
+  include "static/**"
   from "/repo/k8s/tls/ca.crt"
   into "$buildDir/docker"
 }
 
 task createClientExtensionDockerFile(type: Dockerfile) {
-  instructionsFromTemplate(file("Dockerfile"))
+  instructionsFromTemplate(file("$buildDir/docker/Dockerfile"))
 }
 
 task buildClientExtensionDockerImage(type: DockerBuildImage) {
@@ -19,11 +20,5 @@ task buildClientExtensionDockerImage(type: DockerBuildImage) {
   }
   else {
    images = [project.name]
-  }
-}
-
-buildClientExtension {
-  from("src") {
-    include "**"
   }
 }

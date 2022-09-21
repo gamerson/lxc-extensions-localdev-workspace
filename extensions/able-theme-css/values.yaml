@@ -1,0 +1,4 @@
+#@data/values
+---
+cpu: 100m
+memory: 50Mi

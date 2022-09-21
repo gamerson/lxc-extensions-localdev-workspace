@@ -29,7 +29,7 @@ repositories {
 
 task dockerfileDeps(type: Copy) {
   from bootJar
-  from "${rootProject.projectDir}/k8s/tls/ca.crt"
+  from "/repo/k8s/tls/ca.crt"
   into "$buildDir/docker"
 }
 
