@@ -14,7 +14,7 @@
       "C_Coupon.everything"
     ]
   },
-  "com.liferay.object.configuration.ObjectActionExecutorFactoryConfiguration~coupon-issued-action": {
+  "com.liferay.object.configuration.FunctionObjectActionExecutorFactoryConfiguration~coupon-issued-action": {
     "description": "Coupon Issued Action",
     "resourcePath": "/coupons/issued",
     "oauth2Application": "coupon.user.agent.application"
