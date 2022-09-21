@@ -1,5 +1,7 @@
 #!/bin/bash
 
+OAUTH2_PROFILE="coupondata"
+
 set -e
 
 JOB_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
@@ -14,10 +16,11 @@ find /etc/liferay/lxc/dxp-metadata -type l -not -ipath "*/..data" -print -exec s
 
 echo "########################"
 DXP_HOST=$(cat /etc/liferay/lxc/dxp-metadata/com.liferay.lxc.dxp.mainDomain)
-OAUTH2_CLIENTID=$(cat /etc/liferay/lxc/ext-init-metadata/coupondata.oauth2.headless.server.client.id)
-OAUTH2_SECRET=$(cat /etc/liferay/lxc/ext-init-metadata/coupondata.oauth2.headless.server.client.secret)
+OAUTH2_CLIENTID=$(cat /etc/liferay/lxc/ext-init-metadata/${OAUTH2_PROFILE}.oauth2.headless.server.client.id)
+OAUTH2_SECRET=$(cat /etc/liferay/lxc/ext-init-metadata/${OAUTH2_PROFILE}.oauth2.headless.server.client.secret)
 
 echo "DXP_HOST: ${DXP_HOST}"
+echo "OAUTH2_PROFILE: ${OAUTH_PROFILE}"
 echo "OAUTH2_CLIENTID: ${OAUTH2_CLIENTID}"
 echo "OAUTH2_SECRET: ${OAUTH2_SECRET}"
 
@@ -48,12 +51,16 @@ process_batch() {
 	BASE_HREF="/${BASE_HREF#*://*/}"
 	echo "BASE_HREF=${BASE_HREF}"
 
+	local BATCH_HREF=$(jq -r '.actions.createBatch.href' ${1})
+	BATCH_HREF="/${BATCH_HREF#*://*/}"
+	echo "BATCH_HREF=${BATCH_HREF}"
+
 	local RESULT=$(\
 		curl \
 			-s \
 			-v \
 			-X 'POST' \
-			"https://${DXP_HOST}${BASE_HREF}/batch?createStrategy=UPSERT" \
+			"https://${DXP_HOST}${BATCH_HREF}?createStrategy=UPSERT" \
 			-H 'accept: application/json' \
 			-H 'Content-Type: application/json' \
 			-H "Authorization: Bearer ${ACCESS_TOKEN}" \
@@ -87,6 +94,42 @@ process_batch() {
 
 		echo "BATCH STATUS: ${BATCH_STATUS}"
 	done
+
+	if [ "${BATCH_STATUS}" == "COMPLETED" ] || [ "${BATCH_STATUS}" == "FAILED" ] ; then
+		local BATCH_EXTERNAL_REFERENCE_CODES=$(jq -r '[.items[].externalReferenceCode] | join(" ")' ${1})
+
+		for i in $BATCH_EXTERNAL_REFERENCE_CODES; do
+			ENTRY=$(
+				curl \
+					-s \
+					"https://${DXP_HOST}${BASE_HREF}/by-external-reference-code/${i}" \
+					-H 'accept: application/json' \
+					-H "Authorization: Bearer ${ACCESS_TOKEN}" \
+					--cacert ../ca.crt \
+					| jq -r .)
+
+			STATUS=$(jq -r '.status.code' <<< $ENTRY)
+			STATUS_LABEL_I18N=$(jq -r '.status.label_i18n' <<< $ENTRY)
+
+			echo "Status of ${i} : ${STATUS_LABEL_I18N}"
+
+			if [ $STATUS -eq 2 ];then
+				ENTRY_ID=$(jq -r '.id' <<< $ENTRY)
+
+				PUBLISHED=$(
+					curl \
+						-s \
+						-X 'POST' \
+						"https://${DXP_HOST}${BASE_HREF}/${ENTRY_ID}/publish" \
+						-H 'accept: application/json' \
+						-H "Authorization: Bearer ${ACCESS_TOKEN}" \
+						--cacert ../ca.crt \
+						| jq -r .)
+
+				echo "PUBLISHED: ${ENTRY_ID}"
+			fi
+		done
+	fi
 }
 
 for i in $(find . -type f -name *.data.batch-engine.json); do
