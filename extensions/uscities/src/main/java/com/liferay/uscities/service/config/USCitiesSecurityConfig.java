@@ -1,8 +1,7 @@
 package com.liferay.uscities.service.config;
 
-import java.net.URI;
+import java.net.URL;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -10,20 +9,22 @@ import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.convert.converter.Converter;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.RequestEntity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.oauth2.server.resource.introspection.SpringOpaqueTokenIntrospector;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import com.nimbusds.jose.JOSEObjectType;
+import com.nimbusds.jose.proc.DefaultJOSEObjectTypeVerifier;
+import com.nimbusds.jose.proc.JWSAlgorithmFamilyJWSKeySelector;
+import com.nimbusds.jose.proc.JWSKeySelector;
+import com.nimbusds.jose.proc.SecurityContext;
+import com.nimbusds.jwt.proc.DefaultJWTProcessor;
 
 @Configuration
 public class USCitiesSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -71,55 +72,34 @@ public class USCitiesSecurityConfig extends WebSecurityConfigurerAdapter {
 		return source;
 	}
 
+	@Bean
+	public JwtDecoder jwtDecoder(@Value("${uscities.oauth2.jwks.uri}") String jwkSetUrl) throws Exception {
+		JWSKeySelector<SecurityContext> jwsKeySelector =
+			JWSAlgorithmFamilyJWSKeySelector.fromJWKSetURL(new URL(jwkSetUrl));
+
+		DefaultJWTProcessor<SecurityContext> jwtProcessor =
+			new DefaultJWTProcessor<>();
+		jwtProcessor.setJWSKeySelector(jwsKeySelector);
+		jwtProcessor.setJWSTypeVerifier(
+			new DefaultJOSEObjectTypeVerifier<>(new JOSEObjectType("at+jwt")));
+
+		return new NimbusJwtDecoder(jwtProcessor);
+	}
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.cors(
 		).and(
-		).authorizeRequests(
-		).antMatchers(
-			"/"
-		).permitAll(
-		).anyRequest(
-		).authenticated(
+		).csrf().disable().sessionManagement().sessionCreationPolicy(
+			SessionCreationPolicy.STATELESS
 		).and(
+		).authorizeRequests(
+			confgurer -> confgurer.antMatchers(
+				"/"
+			).permitAll().anyRequest().authenticated()
 		).oauth2ResourceServer(
-			oauth2 -> oauth2.opaqueToken().introspector(
-				new CustomSpringOpaqueTokenIntrospector(
-					introspectionUri, clientId)
-			)
+			OAuth2ResourceServerConfigurer::jwt
 		);
-	}
-
-	private static class CustomSpringOpaqueTokenIntrospector extends SpringOpaqueTokenIntrospector {
-
-		public CustomSpringOpaqueTokenIntrospector(String introspectionUri, String clientId) {
-			super(introspectionUri, new RestTemplate());
-			setRequestEntityConverter(customRequestEntityConverter(URI.create(introspectionUri), clientId));
-		}
-
-		private static Converter<String, RequestEntity<?>> customRequestEntityConverter(URI introspectionUri,
-				String clientId) {
-			return (token) -> {
-				HttpHeaders headers = requestHeaders();
-				MultiValueMap<String, String> body = requestBody(clientId, token);
-				return new RequestEntity<>(body, headers, HttpMethod.POST, introspectionUri);
-			};
-		}
-
-		private static HttpHeaders requestHeaders() {
-			HttpHeaders headers = new HttpHeaders();
-			headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-			return headers;
-		}
-
-		private static MultiValueMap<String, String> requestBody(String clientId, String token) {
-			MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-			body.add("client_id", clientId);
-			body.add("token", token);
-			body.add("token_type_hint", "access_token");
-			return body;
-		}
-
 	}
 
 }
