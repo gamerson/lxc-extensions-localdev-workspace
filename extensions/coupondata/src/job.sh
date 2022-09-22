@@ -20,7 +20,7 @@ OAUTH2_CLIENTID=$(cat /etc/liferay/lxc/ext-init-metadata/${OAUTH2_PROFILE}.oauth
 OAUTH2_SECRET=$(cat /etc/liferay/lxc/ext-init-metadata/${OAUTH2_PROFILE}.oauth2.headless.server.client.secret)
 
 echo "DXP_HOST: ${DXP_HOST}"
-echo "OAUTH2_PROFILE: ${OAUTH_PROFILE}"
+echo "OAUTH2_PROFILE: ${OAUTH2_PROFILE}"
 echo "OAUTH2_CLIENTID: ${OAUTH2_CLIENTID}"
 echo "OAUTH2_SECRET: ${OAUTH2_SECRET}"
 
