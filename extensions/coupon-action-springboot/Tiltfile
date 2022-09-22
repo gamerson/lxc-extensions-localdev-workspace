@@ -4,10 +4,5 @@ process_extension(
   'coupon-action-springboot', 
   'client-extensions/coupon-action-springboot',
   'extension_deployment',
-  'dxp.localdev.me',
-  objects=[
-    'coupon-action-springboot:ingress',
-    'coupon-action-springboot:ingressroute'
-  ],
   resource_deps=['coupon-definition'])
   

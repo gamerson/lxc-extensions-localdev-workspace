@@ -1,0 +1,21 @@
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+
+task copyClientExtensionZipToDocker(type: Copy) {
+  dependsOn buildClientExtension
+  from zipTree(buildClientExtension.archivePath)
+  from "${System.env.LXC_LOCALDEV_REPO}/k8s/tls/ca.crt"
+  include "**/*"
+  into "$buildDir/docker"
+}
+
+buildClientExtension.finalizedBy copyClientExtensionZipToDocker
+
+task buildClientExtensionDockerImage(type: DockerBuildImage) {
+  dependsOn buildClientExtension
+  if (project.hasProperty('imageId')) {
+    images = [project.properties["imageId"]]
+  }
+  else {
+   images = [project.name]
+  }
+}

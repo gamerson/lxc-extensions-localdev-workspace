@@ -1,5 +1,4 @@
 import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
-import com.bmuschko.gradle.docker.tasks.image.Dockerfile
 
 buildscript {
   dependencies {
@@ -27,26 +26,10 @@ repositories {
 	} 
 }
 
-task dockerfileDeps(type: Copy) {
-  from bootJar
-  from "/repo/k8s/tls/ca.crt"
-  into "$buildDir/docker"
-}
-
-task createClientExtensionDockerFile(type: Dockerfile) {
-  instructionsFromTemplate(file("Dockerfile"))
-}
-
-task buildClientExtensionDockerImage(type: DockerBuildImage) {
-  dependsOn createClientExtensionDockerFile, dockerfileDeps
-  if (project.hasProperty('imageId')) {
-    images = [project.properties["imageId"]]
-  }
-  else {
-   images = [project.name]
-  }
+createClientExtensionConfig {
+  templateName = "springboot"
 }
 
 buildClientExtension {
-  from dockerfileDeps
+  from bootJar
 }

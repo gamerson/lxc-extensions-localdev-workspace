@@ -1,5 +1,0 @@
-#@data/values
----
-cpu: 200m
-memory: 300Mi
-initMetadata: true
