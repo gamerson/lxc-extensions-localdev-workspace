@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequestMapping(value = "/coupons")
 @RestController
-public class CouponsController {
+public class CouponsFunction {
 
   @Qualifier("mainDomain")
   @Resource
