@@ -4,7 +4,7 @@ coupon-action-user-agent:
   scopes:
     - C_Coupon.everything
 
-coupon-action-springboot:
+coupon-issued-function:
   type: objectAction
   description: Coupon Issued Action
   resourcePath: /coupons/issued

@@ -3,6 +3,10 @@
     "create": {
       "method": "POST",
       "href": "https://dxp.localdev.me/o/object-admin/v1.0/object-definitions"
+    },
+    "createBatch": {
+      "method": "POST",
+      "href": "https://dxp.localdev.me/o/object-admin/v1.0/object-definitions/batch"
     }
   },
   "facets": [],
@@ -13,25 +17,26 @@
       "actions": {
         "permissions": {
           "method": "PATCH",
-          "href": "https://dxp.localdev.me/o/object-admin/v1.0/object-definitions/45788"
+          "href": "https://dxp.localdev.me/o/object-admin/v1.0/object-definitions/46537"
         },
         "get": {
           "method": "GET",
-          "href": "https://dxp.localdev.me/o/object-admin/v1.0/object-definitions/45788"
+          "href": "https://dxp.localdev.me/o/object-admin/v1.0/object-definitions/46537"
         },
         "update": {
           "method": "PUT",
-          "href": "https://dxp.localdev.me/o/object-admin/v1.0/object-definitions/45788"
+          "href": "https://dxp.localdev.me/o/object-admin/v1.0/object-definitions/46537"
         },
         "delete": {
           "method": "DELETE",
-          "href": "https://dxp.localdev.me/o/object-admin/v1.0/object-definitions/45788"
+          "href": "https://dxp.localdev.me/o/object-admin/v1.0/object-definitions/46537"
         }
       },
       "active": true,
-      "dateCreated": "2022-09-13T22:06:35Z",
-      "dateModified": "2022-09-13T22:06:36Z",
-      "id": 45788,
+      "dateCreated": "2022-09-22T18:15:25Z",
+      "dateModified": "2022-09-22T18:47:52Z",
+      "externalReferenceCode": "32a81178-8c8b-8435-1b17-e1981c11424d",
+      "id": 46537,
       "label": {
         "en_US": "Coupon"
       },
@@ -40,18 +45,20 @@
         {
           "active": true,
           "conditionExpression": "issued",
-          "dateCreated": "2022-09-14T20:20:52Z",
-          "dateModified": "2022-09-14T20:24:37Z",
-          "description": "Triggered when the Coupon becomes issued",
-          "id": 45752,
+          "dateCreated": "2022-09-22T18:47:52Z",
+          "dateModified": "2022-09-23T03:48:12Z",
+          "description": "Fire this action when a coupon is issued.",
+          "id": 46639,
           "name": "Coupon Issued",
-          "objectActionExecutorKey": "factory#coupon-issued-action",
+          "objectActionExecutorKey": "function#coupon-issued-function",
           "objectActionTriggerKey": "onAfterUpdate",
-          "parameters": {},
+          "parameters": {
+            "script": "println \"Coupon ${objectEntryId} has been issued.\""
+          },
           "status": {
-            "code": 1,
-            "label": "success",
-            "label_i18n": "Success"
+            "code": 0,
+            "label": "never-ran",
+            "label_i18n": "Never Ran"
           }
         }
       ],
@@ -60,8 +67,8 @@
           "DBType": "String",
           "businessType": "Text",
           "defaultValue": "",
-          "externalReferenceCode": "36580cff-0061-9ec2-8dfa-e8a44edb0b12",
-          "id": 45802,
+          "externalReferenceCode": "e9c84ffd-55ee-5e7d-a1af-5d3f50129eef",
+          "id": 46551,
           "indexed": true,
           "indexedAsKeyword": false,
           "indexedLanguageId": "en_US",
@@ -70,7 +77,12 @@
           },
           "listTypeDefinitionId": 0,
           "name": "code",
-          "objectFieldSettings": [],
+          "objectFieldSettings": [
+            {
+              "name": "showCounter",
+              "value": "false"
+            }
+          ],
           "required": true,
           "state": false,
           "system": false,
@@ -80,8 +92,8 @@
           "DBType": "Date",
           "businessType": "Date",
           "defaultValue": "",
-          "externalReferenceCode": "31962085-e2d9-652b-8d7e-cd82a2f97afc",
-          "id": 45792,
+          "externalReferenceCode": "b3083b05-82d4-9fc8-6765-c8eb399e7e21",
+          "id": 46541,
           "indexed": false,
           "indexedAsKeyword": false,
           "indexedLanguageId": "",
@@ -100,8 +112,8 @@
           "DBType": "String",
           "businessType": "Text",
           "defaultValue": "",
-          "externalReferenceCode": "834ed0ff-5288-21c2-5580-bbf365af632f",
-          "id": 45790,
+          "externalReferenceCode": "ee77ee06-3dc8-75c0-b86f-96420fa1d14c",
+          "id": 46539,
           "indexed": false,
           "indexedAsKeyword": false,
           "indexedLanguageId": "",
@@ -120,8 +132,8 @@
           "DBType": "String",
           "businessType": "Text",
           "defaultValue": "",
-          "externalReferenceCode": "af7833de-2c12-4330-701e-4dca4c76bf01",
-          "id": 45794,
+          "externalReferenceCode": "78142e9b-57f4-a9cc-6089-b9019d3b4f4f",
+          "id": 46543,
           "indexed": false,
           "indexedAsKeyword": false,
           "indexedLanguageId": "",
@@ -140,10 +152,10 @@
           "DBType": "Long",
           "businessType": "LongInteger",
           "defaultValue": "",
-          "externalReferenceCode": "b5baefb7-66d2-bd98-d52d-b15c195c454f",
-          "id": 45796,
-          "indexed": false,
-          "indexedAsKeyword": false,
+          "externalReferenceCode": "177e7cd1-e17d-610b-675c-c5d9e28f06c2",
+          "id": 46545,
+          "indexed": true,
+          "indexedAsKeyword": true,
           "indexedLanguageId": "",
           "label": {
             "en_US": "ID"
@@ -160,8 +172,8 @@
           "DBType": "Date",
           "businessType": "Date",
           "defaultValue": "",
-          "externalReferenceCode": "cab78582-c2a0-d1d8-9a26-4536284b8e00",
-          "id": 45808,
+          "externalReferenceCode": "e3b2f527-857f-04ef-0e9a-360fb10788d8",
+          "id": 46559,
           "indexed": true,
           "indexedAsKeyword": false,
           "indexedLanguageId": "",
@@ -180,8 +192,8 @@
           "DBType": "Boolean",
           "businessType": "Boolean",
           "defaultValue": "",
-          "externalReferenceCode": "611517b9-832f-4890-c09c-050271b94b5e",
-          "id": 45810,
+          "externalReferenceCode": "13afdfd8-0537-3272-0e74-50488ad54662",
+          "id": 46561,
           "indexed": true,
           "indexedAsKeyword": false,
           "indexedLanguageId": "",
@@ -200,8 +212,8 @@
           "DBType": "Date",
           "businessType": "Date",
           "defaultValue": "",
-          "externalReferenceCode": "6f966c83-1a6b-ca0c-c5ab-b97d69f58638",
-          "id": 45798,
+          "externalReferenceCode": "14c5b675-0bd2-f0b3-5c90-ba3690f1eef1",
+          "id": 46547,
           "indexed": false,
           "indexedAsKeyword": false,
           "indexedLanguageId": "",
@@ -220,8 +232,8 @@
           "DBType": "String",
           "businessType": "Text",
           "defaultValue": "",
-          "externalReferenceCode": "8a34e12a-ee41-ade0-634e-6db55ac5d225",
-          "id": 45800,
+          "externalReferenceCode": "7967f9c9-7072-9360-b144-1706d0f45c4d",
+          "id": 46549,
           "indexed": false,
           "indexedAsKeyword": false,
           "indexedLanguageId": "",
@@ -238,6 +250,7 @@
         }
       ],
       "objectLayouts": [],
+      "objectRelationships": [],
       "objectViews": [],
       "panelCategoryKey": "applications_menu.applications.content",
       "parameterRequired": false,
@@ -251,8 +264,7 @@
         "label": "approved",
         "label_i18n": "Approved"
       },
-      "system": false,
-      "titleObjectFieldId": 0
+      "system": false
     }
   ],
   "lastPage": 1,

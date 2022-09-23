@@ -1,5 +1,5 @@
-coupon-definition-import-profile:
-  description: Coupon Object Definition Import Profile
+coupon-definition:
+  name: Coupon Definition
   scopes:
     - Liferay.Headless.Batch.Engine.everything
     - Liferay.Object.Admin.REST.everything

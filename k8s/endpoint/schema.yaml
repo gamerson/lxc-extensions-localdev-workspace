@@ -1,7 +1,0 @@
-#@data/values-schema
----
-id: "dxp"
-dockerHostAddress: ""
-dockerHostPort: 8080
-tlsSecretName: "localdev-tls-secret"
-virtualInstanceId: ""

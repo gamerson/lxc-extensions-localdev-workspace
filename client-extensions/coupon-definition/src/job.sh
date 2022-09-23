@@ -1,6 +1,10 @@
 #!/bin/bash
 
+OAUTH2_PROFILE="coupon-definition"
+
 set -e
+
+VERBOSE_FLAG=""
 
 JOB_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
@@ -14,24 +18,34 @@ find /etc/liferay/lxc/dxp-metadata -type l -not -ipath "*/..data" -print -exec s
 
 echo "########################"
 DXP_HOST=$(cat /etc/liferay/lxc/dxp-metadata/com.liferay.lxc.dxp.mainDomain)
-OAUTH2_CLIENTID=$(cat /etc/liferay/lxc/ext-init-metadata/coupon-definition.oauth2.headless.server.client.id)
-OAUTH2_SECRET=$(cat /etc/liferay/lxc/ext-init-metadata/coupon-definition.oauth2.headless.server.client.secret)
+OAUTH2_CLIENTID=$(cat /etc/liferay/lxc/ext-init-metadata/${OAUTH2_PROFILE}.oauth2.headless.server.client.id)
+OAUTH2_SECRET=$(cat /etc/liferay/lxc/ext-init-metadata/${OAUTH2_PROFILE}.oauth2.headless.server.client.secret)
 
 echo "DXP_HOST: ${DXP_HOST}"
+echo "OAUTH2_PROFILE: ${OAUTH2_PROFILE}"
 echo "OAUTH2_CLIENTID: ${OAUTH2_CLIENTID}"
 echo "OAUTH2_SECRET: ${OAUTH2_SECRET}"
 
 echo "########################"
-ACCESS_TOKEN=$(\
+TOKEN_RESULT=$(\
 	curl \
 		-s \
+		$VERBOSE_FLAG \
 		-X POST \
 		"https://${DXP_HOST}/o/oauth2/token" \
 		-H 'Content-type: application/x-www-form-urlencoded' \
 		-d "grant_type=client_credentials&client_id=${OAUTH2_CLIENTID}&client_secret=${OAUTH2_SECRET}" \
 		--cacert ../ca.crt \
-		| jq -r .access_token)
+		| jq -r '.')
+echo "TOKEN_RESULT: ${TOKEN_RESULT}"
+
+ACCESS_TOKEN=$(jq -r '.access_token' <<< $TOKEN_RESULT)
+
 echo "ACCESS_TOKEN: ${ACCESS_TOKEN}"
+
+if [ "${ACCESS_TOKEN}" == "null" ];then
+	exit 1
+fi
 
 process_batch() {
 	echo "########################"
@@ -48,12 +62,16 @@ process_batch() {
 	BASE_HREF="/${BASE_HREF#*://*/}"
 	echo "BASE_HREF=${BASE_HREF}"
 
+	local BATCH_HREF=$(jq -r '.actions.createBatch.href' ${1})
+	BATCH_HREF="/${BATCH_HREF#*://*/}"
+	echo "BATCH_HREF=${BATCH_HREF}"
+
 	local RESULT=$(\
 		curl \
 			-s \
-			-v \
+			$VERBOSE_FLAG \
 			-X 'POST' \
-			"https://${DXP_HOST}${BASE_HREF}/batch" \
+			"https://${DXP_HOST}${BATCH_HREF}?createStrategy=UPSERT" \
 			-H 'accept: application/json' \
 			-H 'Content-Type: application/json' \
 			-H "Authorization: Bearer ${ACCESS_TOKEN}" \
@@ -76,6 +94,7 @@ process_batch() {
 		RESULT=$(\
 			curl \
 				-s \
+				$VERBOSE_FLAG \
 				-X 'GET' \
 				"https://${DXP_HOST}/o/headless-batch-engine/v1.0/import-task/by-external-reference-code/${BATCH_EXTERNAL_REFERENCE_CODE}" \
 				-H 'accept: application/json' \
@@ -88,33 +107,41 @@ process_batch() {
 		echo "BATCH STATUS: ${BATCH_STATUS}"
 	done
 
-	if [ "${BATCH_STATUS}" == "COMPLETED" ] && [ "$BASE_HREF" == "/o/object-admin/v1.0/object-definitions" ]; then
-		RESULT=$(\
-			curl \
-				-s \
-				"https://${DXP_HOST}${BASE_HREF}" \
-				-H 'accept: application/json' \
-				-H 'Content-Type: application/json' \
-				-H "Authorization: Bearer ${ACCESS_TOKEN}" \
-				--cacert ../ca.crt \
-				| jq -r '.')
+	if [ "${BATCH_STATUS}" == "COMPLETED" ] || [ "${BATCH_STATUS}" == "FAILED" ] ; then
+		local BATCH_EXTERNAL_REFERENCE_CODES=$(jq -r '[.items[].externalReferenceCode] | join(" ")' ${1})
 
-		echo "GET: ${RESULT}"
+		for i in $BATCH_EXTERNAL_REFERENCE_CODES; do
+			ENTRY=$(
+				curl \
+					-s \
+					$VERBOSE_FLAG \
+					"https://${DXP_HOST}${BASE_HREF}/by-external-reference-code/${i}" \
+					-H 'accept: application/json' \
+					-H "Authorization: Bearer ${ACCESS_TOKEN}" \
+					--cacert ../ca.crt \
+					| jq -r .)
 
-		PUBLISH=$(jq -r '[.items[].id] | join(" ")' <<< "$RESULT")
+			STATUS=$(jq -r '.status.code' <<< $ENTRY)
+			STATUS_LABEL_I18N=$(jq -r '.status.label_i18n' <<< $ENTRY)
 
-		echo "PUBLISH: ${PUBLISH}"
+			echo "Status of ${i} : ${STATUS_LABEL_I18N}"
 
-		for i in $PUBLISH; do
-			curl \
-				-s \
-				-X 'POST' \
-				"https://${DXP_HOST}$BASE_HREF/${i}/publish" \
-				-H 'accept: application/json' \
-				-H "Authorization: Bearer ${ACCESS_TOKEN}" \
-				--cacert ../ca.crt \
-				| jq -r .
-			echo "PUBLISHED: ${i}"
+			if [ $STATUS -eq 2 ];then
+				ENTRY_ID=$(jq -r '.id' <<< $ENTRY)
+
+				PUBLISHED=$(
+					curl \
+						-s \
+						$VERBOSE_FLAG \
+						-X 'POST' \
+						"https://${DXP_HOST}${BASE_HREF}/${ENTRY_ID}/publish" \
+						-H 'accept: application/json' \
+						-H "Authorization: Bearer ${ACCESS_TOKEN}" \
+						--cacert ../ca.crt \
+						| jq -r .)
+
+				echo "PUBLISHED: ${ENTRY_ID}"
+			fi
 		done
 	fi
 }
