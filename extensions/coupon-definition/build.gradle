@@ -2,7 +2,7 @@ createClientExtensionConfig {
   templateName = "job"
 }
 
-buildClientExtension {
+assembleClientExtension {
   from("src") {
     include "**"
   }
