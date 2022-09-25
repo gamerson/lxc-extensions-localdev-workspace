@@ -1,9 +1,0 @@
-createClientExtensionConfig {
-  templateName = "job"
-}
-
-assembleClientExtension {
-  from("src") {
-    include "**"
-  }
-}

@@ -26,21 +26,6 @@ repositories {
 	} 
 }
 
-createClientExtensionConfig {
-  templateName = "springboot"
-}
-
 assembleClientExtension {
   from bootJar
-}
-
-sourceSets {
-  main {
-    java {
-      srcDirs "src/function/java"
-    }
-    resources {
-      srcDirs "src/function/resources"
-    }
-  }
 }
