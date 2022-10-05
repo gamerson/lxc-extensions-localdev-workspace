@@ -1,6 +1,0 @@
-load('/repo/tilt/Tiltfile_functions', 'process_extension')
-
-process_extension(
-  'able-theme-css', 
-  'client-extensions/able-theme-css',
-  'extension_static')

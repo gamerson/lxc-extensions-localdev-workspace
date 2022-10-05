@@ -10,3 +10,7 @@ city-search:
   urls:
     - static/js/main.*.js
   useESM: false
+
+assemble:
+  - from: build/
+    include: "static/**/*"

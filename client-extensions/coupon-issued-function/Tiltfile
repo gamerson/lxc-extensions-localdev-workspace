@@ -1,8 +1,0 @@
-load('/repo/tilt/Tiltfile_functions', 'process_extension')
-
-process_extension(
-  'coupon-issued-function', 
-  'client-extensions/coupon-issued-function',
-  'extension_deployment',
-  resource_deps=['coupon-definition'])
-  

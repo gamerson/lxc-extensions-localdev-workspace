@@ -2,10 +2,10 @@
     "private": true,
     "workspaces": {
         "packages": [
-            "extensions/coupon-remote-app",
-            "extensions/city-search",
-            "extensions/able-theme-css",
-            "extensions/coupon-action-nodejs"
+            "client-extensions/coupon-remote-app",
+            "client-extensions/city-search",
+            "client-extensions/able-theme-css",
+            "client-extensions/coupon-action-nodejs"
         ]
     }
 }
